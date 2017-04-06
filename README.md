@@ -1,4 +1,4 @@
-# application-parser
+# Relativity Application-Parser
 Project Champion - Heretik: This nuget package is used to extract information from Relativity's application for development. To install
 
 ```
