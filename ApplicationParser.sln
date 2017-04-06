@@ -1,0 +1,44 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26228.9
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApplicationParser", "ApplicationParser\ApplicationParser.csproj", "{0C359651-46F6-4536-8B3E-C7531FF0CC68}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApplicationParser.Runner", "ApplicationParser.Runner\ApplicationParser.Runner.csproj", "{87AD39F2-DD8D-4519-B4FC-F9F50D0FE1A2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "nuget", "nuget", "{C2086ECD-680B-4BB6-B8B6-6D3DFCB2B4E7}"
+	ProjectSection(SolutionItems) = preProject
+		application\application.xml = application\application.xml
+		nuget\ApplicationParser.nuspec = nuget\ApplicationParser.nuspec
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CodeGen", "CodeGen", "{0FECA139-B14D-4B23-961A-9133FA0F4269}"
+	ProjectSection(SolutionItems) = preProject
+		nuget\content\CodeGen\ArtifactWrapper.cs.pp = nuget\content\CodeGen\ArtifactWrapper.cs.pp
+		nuget\content\CodeGen\ObjectDefs.tt.pp = nuget\content\CodeGen\ObjectDefs.tt.pp
+		nuget\content\CodeGen\ObjectTypes.tt.pp = nuget\content\CodeGen\ObjectTypes.tt.pp
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0C359651-46F6-4536-8B3E-C7531FF0CC68}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0C359651-46F6-4536-8B3E-C7531FF0CC68}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0C359651-46F6-4536-8B3E-C7531FF0CC68}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0C359651-46F6-4536-8B3E-C7531FF0CC68}.Release|Any CPU.Build.0 = Release|Any CPU
+		{87AD39F2-DD8D-4519-B4FC-F9F50D0FE1A2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{87AD39F2-DD8D-4519-B4FC-F9F50D0FE1A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{87AD39F2-DD8D-4519-B4FC-F9F50D0FE1A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{87AD39F2-DD8D-4519-B4FC-F9F50D0FE1A2}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{0FECA139-B14D-4B23-961A-9133FA0F4269} = {C2086ECD-680B-4BB6-B8B6-6D3DFCB2B4E7}
+	EndGlobalSection
+EndGlobal
