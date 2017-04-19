@@ -40,12 +40,14 @@ namespace ApplicationParser
 
         public static string WriteApplicationDefinition(this Application app)
         {
-            return $@"
-\tpublic static class Application
-\t{{                       
-\t\t public const string Name = ""{app.Name}"";
-\t\t public const string Guid = ""{app.Guid}"";
-\t}}                 ";
+            var sb = new StringBuilder();
+            sb.AppendLine("\tpublic static class Application");
+            sb.AppendLine("\t{");
+            sb.AppendLine($"\t\tpublic const string Name = \"{app.Name}\";");
+            sb.AppendLine($"\t\tpublic const string Guid= \"{app.Guid}\";");
+            sb.AppendLine("\t}");
+
+            return sb.ToString();
         }
 
         public static string WriteChoiceGuids(this Application app)
@@ -109,7 +111,7 @@ namespace ApplicationParser
             return;
         }
 
-        
+
         private static Tuple<string, string> GetFieldType(Field field)
         {
             switch ((FieldTypes)field.FieldTypeId)
@@ -141,16 +143,20 @@ namespace ApplicationParser
         }
         private static string GetString(ArtifactDef obj)
         {
-            return $"public const string {obj.Name} = \"{obj.Guid}\";";
+            return $"public const string {Encode(obj.Name)} = \"{obj.Guid}\";";
         }
         private static string GetStaticClass(string name)
         {
-            return $"public static class {name}";
+            return $"public static class {Encode(name)}";
+        }
+        public static string Encode(string text)
+        {
+            return text.Replace("%", "Percent");
         }
 
         private static string GetClass(string name)
         {
-            return $"public class {name}";
+            return $"public class {Encode(name)}";
         }
         #endregion
 
