@@ -15,9 +15,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "nuget", "nuget", "{C2086ECD
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CodeGen", "CodeGen", "{0FECA139-B14D-4B23-961A-9133FA0F4269}"
 	ProjectSection(SolutionItems) = preProject
-		nuget\content\CodeGen\ArtifactWrapper.cs.pp = nuget\content\CodeGen\ArtifactWrapper.cs.pp
-		nuget\content\CodeGen\ObjectDefs.tt.pp = nuget\content\CodeGen\ObjectDefs.tt.pp
-		nuget\content\CodeGen\ObjectTypes.tt.pp = nuget\content\CodeGen\ObjectTypes.tt.pp
+		gen\ArtifactWrapper.cs.pp = gen\ArtifactWrapper.cs.pp
+		gen\ObjectDefs.tt.pp = gen\ObjectDefs.tt.pp
+		gen\ObjectTypesDefs.tt.pp = gen\ObjectTypesDefs.tt.pp
 	EndProjectSection
 EndProject
 Global

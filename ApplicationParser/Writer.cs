@@ -38,6 +38,16 @@ namespace ApplicationParser
             return $"{obj.Name}FieldGuids";
         }
 
+        public static string WriteApplicationDefinition(this Application app)
+        {
+            return $@"
+\tpublic static class Application
+\t{{                       
+\t\t public const string Name = ""{app.Name}"";
+\t\t public const string Guid = ""{app.Guid}"";
+\t}}                 ";
+        }
+
         public static string WriteChoiceGuids(this Application app)
         {
             var str = new StringBuilder();
@@ -82,6 +92,7 @@ namespace ApplicationParser
             }
             return sb.ToString();
         }
+        #region private parts
         private static void GetProperties(ObjectDef obj, StringBuilder str)
         {
             foreach (var field in obj.Fields)
@@ -98,6 +109,7 @@ namespace ApplicationParser
             return;
         }
 
+        
         private static Tuple<string, string> GetFieldType(Field field)
         {
             switch ((FieldTypes)field.FieldTypeId)
@@ -127,7 +139,6 @@ namespace ApplicationParser
                     return new Tuple<string, string>("object", "Value");
             }
         }
-        #region private parts
         private static string GetString(ArtifactDef obj)
         {
             return $"public const string {obj.Name} = \"{obj.Guid}\";";
