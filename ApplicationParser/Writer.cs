@@ -9,7 +9,7 @@ namespace ApplicationParser
         public static string WriteObjectTypeGuids(this Application app)
         {
             var str = new StringBuilder();
-            str.AppendLine($"\t{GetStaticClass("ObjectTypeGuids")}");
+            str.AppendLine($"\t{GetClass("ObjectTypeGuids")}");
             str.AppendLine("\t{");
             foreach (var obj in app.Objects)
             {
@@ -23,7 +23,7 @@ namespace ApplicationParser
             var str = new StringBuilder();
             foreach (var obj in app.Objects)
             {
-                str.AppendLine($"\t{GetStaticClass(GetFieldGuidClass(obj))}");
+                str.AppendLine($"\t{GetClass(GetFieldGuidClass(obj))}");
                 str.AppendLine("\t{");
                 foreach (var field in obj.Fields)
                 {
@@ -57,7 +57,7 @@ namespace ApplicationParser
             {
                 foreach (var field in obj.Fields.Where(x => x.Choices.Any()))
                 {
-                    str.AppendLine($"\t{GetStaticClass(field.Name + "ChoiceGuids")}");
+                    str.AppendLine($"\t{GetClass(field.Name + "ChoiceGuids")}");
                     str.AppendLine("\t{");
                     foreach (var choice in field.Choices)
                     {
@@ -71,7 +71,7 @@ namespace ApplicationParser
         public static string WriteTabGuids(this Application app)
         {
             var str = new StringBuilder();
-            str.AppendLine($"\t{GetStaticClass("TabGuids")}");
+            str.AppendLine($"\t{GetClass("TabGuids")}");
             str.AppendLine("\t{");
             foreach (var tab in app.Tabs)
             {
@@ -100,10 +100,10 @@ namespace ApplicationParser
             foreach (var field in obj.Fields)
             {
                 var parseString = $"Guid.Parse({GetFieldGuidClass(obj)}.{field.Name})";
-                var fieldTypeTuple = GetFieldType(field);
-                str.Append($"\t\tpublic {fieldTypeTuple.Item1} {field.Name}");
+                var fieldType = GetFieldType(field);
+                str.Append($"\t\tpublic {fieldType} {field.Name}");
                 str.Append(" {");
-                str.Append($" get {{ return base.GetValue<{fieldTypeTuple.Item1}>({parseString}); }}");
+                str.Append($" get {{ return base.GetValue<{fieldType}>({parseString}); }}");
                 str.Append($" set {{ base.SetValue({parseString}, value); }}");
                 str.Append(" }");
                 str.AppendLine();
@@ -112,51 +112,44 @@ namespace ApplicationParser
         }
 
 
-        private static Tuple<string, string> GetFieldType(Field field)
+        private static string GetFieldType(Field field)
         {
             switch ((FieldTypes)field.FieldTypeId)
             {
                 case FieldTypes.FixedLength:
                 case FieldTypes.LongText:
-                    return new Tuple<string, string>("string", "ValueAsFixedLengthText");
+                    return "string";
                 case FieldTypes.Decimal:
                 case FieldTypes.Currency:
-                    return new Tuple<string, string>("decimal?", "ValueAsDecimal");
+                    return "decimal?";
                 case FieldTypes.WholeNumber:
-                    return new Tuple<string, string>("int?", "ValueAsWholeNumber");
+                    return "int?";
                 case FieldTypes.SingleChoice:
-                    return new Tuple<string, string>("Choice", "ValueAsSingleChoice");
+                    return "Choice";
                 case FieldTypes.SingleObject:
-                    return new Tuple<string, string>("Artifact", "ValueAsSingleObject");
+                    return "Artifact";
                 case FieldTypes.User:
-                    return new Tuple<string, string>("User", "ValueAsUser");
+                    return "User";
                 case FieldTypes.YesNo:
-                    return new Tuple<string, string>("bool?", "ValueAsYesNo");
+                    return "bool?";
                 case FieldTypes.Date:
-                    return new Tuple<string, string>("DateTime?", "ValueAsDate");
+                    return "DateTime?";
+                case FieldTypes.MultiObject:
+                    return "FieldValueList<Artifact>";
                 case FieldTypes.File:
                 case FieldTypes.MultiChoice:
-                case FieldTypes.MultiObject:
                 default:
-                    return new Tuple<string, string>("object", "Value");
+                    return "object";
             }
         }
         private static string GetString(ArtifactDef obj)
         {
-            return $"public const string {Encode(obj.Name)} = \"{obj.Guid}\";";
-        }
-        private static string GetStaticClass(string name)
-        {
-            return $"public static class {Encode(name)}";
-        }
-        public static string Encode(string text)
-        {
-            return text.Replace("%", "Percent");
+            return $"public const string {obj.Name} = \"{obj.Guid}\";";
         }
 
         private static string GetClass(string name)
         {
-            return $"public class {Encode(name)}";
+            return $"public partial class {name}";
         }
         #endregion
 
