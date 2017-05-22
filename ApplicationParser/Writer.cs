@@ -57,6 +57,7 @@ namespace ApplicationParser
             {
                 foreach (var field in obj.Fields.Where(x => x.Choices.Any()))
                 {
+                    //todo this needs More than just fieldName
                     str.AppendLine($"\t{GetClass(field.Name + "ChoiceGuids")}");
                     str.AppendLine("\t{");
                     foreach (var choice in field.Choices)
@@ -86,6 +87,7 @@ namespace ApplicationParser
             var sb = new StringBuilder();
             foreach (var obj in app.Objects)
             {
+                //TODO: this needs Artifact Type Guids
                 sb.AppendLine($"\t{GetClass(obj.Name)} : ArtifactWrapper");
                 sb.AppendLine("\t{");
                 GetProperties(obj, sb);

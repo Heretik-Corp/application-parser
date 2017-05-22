@@ -13,7 +13,9 @@
         //move to utils class?
         public static string EncodeName(string text)
         {
-            return text.Replace("%", "Percent");
+            return text
+                .Replace("%", "Percent")
+                .Replace("::", "_");
         }
     }
 }
