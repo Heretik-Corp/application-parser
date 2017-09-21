@@ -6,11 +6,12 @@ namespace $rootnamespace$
 {
     public class ArtifactWrapper
     {
-        public RDO RDO { get; set; }
-
+		private Artifact _rdo;
+        public Artifact RDO { get { return _rdo ?? (_rdo = new Artifact()); } set { _rdo = value; } }
+		public int ArtifactId { get { return RDO.ArtifactID; } }
         public void SetValue<T>(Guid fieldGuid, T value)
         {
-            if (this.RDO[fieldGuid] == null)
+            if (!this.RDO.Fields.Any(x => x.Guids.Any(y => y.Equals(fieldGuid))))
             {
                 this.RDO.Fields.Add(new FieldValue(fieldGuid, value));
             }

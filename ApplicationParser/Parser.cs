@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Xml;
 
 namespace ApplicationParser
@@ -12,13 +13,9 @@ namespace ApplicationParser
             var app = new Application();
             app.Guid = xmlDoc.SelectNodes("Application").Item(0).SelectNodes("Guid").Item(0).InnerText;
             app.Name = xmlDoc.SelectNodes("Application").Item(0).SelectNodes("Name").Item(0).InnerText;
-            var objList = new List<ObjectDef>();
-            var objects = xmlDoc.GetElementsByTagName("Object");
-            foreach (XmlNode obj in objects)
-            {
-                var objDef = ParseObject(obj);
-                objList.Add(objDef);
-            }
+            
+            app.Objects = ParseObjects(xmlDoc);
+
             var tabList = new List<Tab>();
             var tabs = xmlDoc.GetElementsByTagName("Tab");
             foreach (XmlNode obj in tabs)
@@ -26,11 +23,34 @@ namespace ApplicationParser
                 var objDef = ParseNode<Tab>(obj);
                 tabList.Add(objDef);
             }
-            app.Objects = objList;
-            app.Tabs = tabList;
+
+            app.Scripts = ParseScripts(xmlDoc).ToList();
             return app;
         }
-        public ObjectDef ParseObject(XmlNode node)
+
+        public IEnumerable<ObjectDef> ParseObjects(XmlDocument xmlDoc)
+        {
+            var objects = xmlDoc.GetElementsByTagName("Object");
+            foreach (XmlNode obj in objects)
+            {
+                var objDef = ParseObject(obj);
+                yield return objDef;
+            }
+        }
+
+        public IEnumerable<Script> ParseScripts(XmlDocument xmlDoc)
+        {
+            var scriptsList = new List<Script>();
+            var scripts = xmlDoc.GetElementsByTagName("ApplicationScripts").Item(0).SelectNodes("ScriptElement");
+
+            foreach (XmlNode obj in scripts)
+            {
+                var objDef = ParseNode<Script>(obj);
+                yield return objDef;
+            }
+        }
+
+        private ObjectDef ParseObject(XmlNode node)
         {
             var obj = new ObjectDef();
             obj.Name = node.SelectNodes("Name").Item(0).InnerText;
@@ -73,7 +93,7 @@ namespace ApplicationParser
                 Name = name.InnerText,
                 FieldTypeId = fieldId
             };
-            if (artifact.Name.Contains("System"))
+            if (artifact.Name.Contains("System") && system)
             {
                 return null;
             }

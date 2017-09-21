@@ -3,9 +3,10 @@ param(
     [version]
     $Version
 )
-cd $PSScriptRoot
+Push-Location $PSScriptRoot
 
 #copy Dll
+"Copying ..\ApplicationParser\bin\Release\ApplicationParser.dll => .\lib\net45"
 Copy-Item ..\ApplicationParser\bin\Release\ApplicationParser.dll .\lib\net45
 
 Remove-Item ".\content\CodeGen\*"
@@ -17,3 +18,4 @@ Get-ChildItem ..\gen\*.pp | % {
 }
 
 nuget pack -Version $Version
+Pop-Location

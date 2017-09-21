@@ -49,7 +49,6 @@ namespace ApplicationParser
 
             return sb.ToString();
         }
-
         public static string WriteChoiceGuids(this Application app)
         {
             var str = new StringBuilder();
@@ -58,7 +57,7 @@ namespace ApplicationParser
                 foreach (var field in obj.Fields.Where(x => x.Choices.Any()))
                 {
                     //todo this needs More than just fieldName
-                    str.AppendLine($"\t{GetClass(field.Name + "ChoiceGuids")}");
+                    str.AppendLine($"\t{GetClass(obj.Name + field.Name + "ChoiceGuids")}");
                     str.AppendLine("\t{");
                     foreach (var choice in field.Choices)
                     {
@@ -96,6 +95,22 @@ namespace ApplicationParser
             }
             return sb.ToString();
         }
+
+        public static string WriteScripts(this Application app)
+        {
+            var sb = new StringBuilder();
+            sb.AppendLine($"\t {GetClass("RelativityScripts")}");
+            sb.AppendLine("\t{");
+            foreach (var obj in app.Scripts)
+            {
+                sb.AppendLine(GetString(obj));
+            }
+            sb.AppendLine("\t}");
+            sb.AppendLine();
+            return sb.ToString();
+        }
+
+
         #region private parts
         private static void GetProperties(ObjectDef obj, StringBuilder str)
         {

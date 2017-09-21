@@ -8,6 +8,8 @@
             get { return EncodeName(_name?.Replace(" ", string.Empty) ?? string.Empty); }
             set { _name = value; }
         }
+        public string RawName { get { return _name; } }
+
         public string Guid { get; set; }
 
         //move to utils class?
@@ -15,7 +17,8 @@
         {
             return text
                 .Replace("%", "Percent")
-                .Replace("::", "_");
+                .Replace("::", "_")
+                .Replace("-", "_");
         }
     }
 }

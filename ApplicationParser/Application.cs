@@ -7,5 +7,6 @@ namespace ApplicationParser
     {
         public IEnumerable<ObjectDef> Objects { get; set; }
         public IEnumerable<Tab> Tabs { get; set; }
+        public IEnumerable<Script> Scripts { get; set; }
     }
 }
