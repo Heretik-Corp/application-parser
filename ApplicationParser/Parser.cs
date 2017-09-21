@@ -23,7 +23,7 @@ namespace ApplicationParser
                 var objDef = ParseNode<Tab>(obj);
                 tabList.Add(objDef);
             }
-
+            app.Tabs = tabList;
             app.Scripts = ParseScripts(xmlDoc).ToList();
             return app;
         }

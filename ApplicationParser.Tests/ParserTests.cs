@@ -3,6 +3,7 @@ using System.Xml.Linq;
 using System.Xml;
 using System.Linq;
 using Xunit;
+using System.IO;
 
 namespace ApplicationParser.Tests
 {

@@ -71,7 +71,7 @@ namespace ApplicationParser
         public static string WriteTabGuids(this Application app)
         {
             var str = new StringBuilder();
-            str.AppendLine($"\t{GetClass("TabGuids")}");
+            //str.AppendLine($"\t{GetClass("TabGuids")}");
             str.AppendLine("\t{");
             foreach (var tab in app.Tabs)
             {

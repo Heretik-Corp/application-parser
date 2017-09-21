@@ -4,7 +4,7 @@
 <#@ import namespace="System.Text" #>
 <#@ import namespace="System.Collections.Generic" #>
 <#@ import namespace="ApplicationParser" #>
-<#@ assembly name="$(SolutionDir)\packages\Heretik.ApplicationParser.1.0.20\lib\net45\ApplicationParser.dll" #>
+<#@ assembly name="$(SolutionDir)\packages\Heretik.ApplicationParser.1.0.22\lib\net45\ApplicationParser.dll" #>
 <# 
 	string solutionsPath = Host.ResolveAssemblyReference("$(SolutionDir)");
 	string filePath = solutionsPath + "application/application.xml"; 
