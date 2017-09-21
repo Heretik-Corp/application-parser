@@ -14,4 +14,6 @@ While this is an open source project on the kCura GitHub account, support is onl
 # Project Champion 
 ![Heretik](https://kcura-media.s3.amazonaws.com/app/img/partner_logos/heretik_small.png "Heretik")
 
-[Heretik](https://heretik.io/) is a major contributor to this project.  If you are interested in having modifications made to this project, please reach out to [Heretik](https://heretik.io/) for an estimate. 
+[Heretik](https://heretik.io/) is a major contributor to this project.  If you are interested in having modifications made to this project, please reach out to [Heretik](https://heretik.io/).
+
+Also check out [Heretik's github page](https://github.com/Heretik-Corp) for more interesting projects
