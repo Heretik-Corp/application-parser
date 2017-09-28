@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26730.12
+VisualStudioVersion = 15.0.26730.16
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApplicationParser", "ApplicationParser\ApplicationParser.csproj", "{0C359651-46F6-4536-8B3E-C7531FF0CC68}"
 EndProject
@@ -13,9 +13,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "nuget", "nuget", "{C2086ECD
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CodeGen", "CodeGen", "{0FECA139-B14D-4B23-961A-9133FA0F4269}"
 	ProjectSection(SolutionItems) = preProject
-		gen\ArtifactWrapper.cs.pp = gen\ArtifactWrapper.cs.pp
+		gen\APArtifactExtensions.cs.pp = gen\APArtifactExtensions.cs.pp
 		gen\ObjectDefs.tt.pp = gen\ObjectDefs.tt.pp
 		gen\ObjectTypesDefs.tt.pp = gen\ObjectTypesDefs.tt.pp
+		gen\RDOWrapper.cs.pp = gen\RDOWrapper.cs.pp
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApplicationParser.Tests", "ApplicationParser.Tests\ApplicationParser.Tests.csproj", "{E44BB8AB-7601-4DAF-B58A-97905C651E1F}"

@@ -1,9 +1,7 @@
-﻿using System;
-using System.Xml.Linq;
-using System.Xml;
+﻿using System.Xml;
 using System.Linq;
 using Xunit;
-using System.IO;
+using Microsoft.CodeAnalysis;
 
 namespace ApplicationParser.Tests
 {

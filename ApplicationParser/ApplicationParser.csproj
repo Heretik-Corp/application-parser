@@ -43,15 +43,21 @@
   <ItemGroup>
     <Compile Include="Application.cs" />
     <Compile Include="FieldNotLoadedException.cs" />
-    <Compile Include="Script.cs" />
-    <Compile Include="Tab.cs" />
-    <Compile Include="Field.cs" />
-    <Compile Include="ArtifactDef.cs" />
-    <Compile Include="ObjectDef.cs" />
+    <Compile Include="Definitions\Script.cs" />
+    <Compile Include="Definitions\Tab.cs" />
+    <Compile Include="Definitions\Field.cs" />
+    <Compile Include="Definitions\ArtifactDef.cs" />
+    <Compile Include="Definitions\ObjectDef.cs" />
     <Compile Include="Parser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Types.cs" />
     <Compile Include="Writer.cs" />
+    <Compile Include="Writers\ApplicationWriter.cs" />
+    <Compile Include="Writers\ChoiceWriter.cs" />
+    <Compile Include="Writers\TabWriter.cs" />
+    <Compile Include="Writers\PropertyWriter.cs" />
+    <Compile Include="Writers\ScriptWriter.cs" />
+    <Compile Include="Writers\WriterUtils.cs" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

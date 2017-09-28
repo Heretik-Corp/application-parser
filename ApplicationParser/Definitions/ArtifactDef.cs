@@ -18,7 +18,11 @@
             return text
                 .Replace("%", "Percent")
                 .Replace("::", "_")
-                .Replace("-", "_");
+                .Replace("-", "_")
+                .Replace("&", "And")
+                .Replace("^", "carrot")
+                .Replace(")", string.Empty)
+                .Replace("(", string.Empty);
         }
     }
 }
