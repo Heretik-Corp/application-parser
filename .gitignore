@@ -254,4 +254,4 @@ paket-files/
 nuget/lib/net45
 application
 /lib
-/lib/kCura.Relativity.Client.dll
+nuget/content/
