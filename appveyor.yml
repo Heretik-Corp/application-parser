@@ -8,4 +8,4 @@ build:
   project: ApplicationParser.sln
   verbosity: minimal
 after_build:
-- ps: nuget/build.ps1 -Version "{version}"
+- ps: nuget/build.ps1 -Version {version}
