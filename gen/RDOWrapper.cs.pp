@@ -11,7 +11,7 @@ namespace $rootnamespace$
 		public int ArtifactId { get { return this.Artifact.ArtifactID; } }
     }
 
-	public class DocumentWrapper : kCura.Relativity.Client.DTOs.Document
+	public class DocumentWrapper 
     {
 		private kCura.Relativity.Client.DTOs.Document _rdo;
         public kCura.Relativity.Client.DTOs.Document Artifact { get { return _rdo ?? (_rdo = new kCura.Relativity.Client.DTOs.Document()); } set { _rdo = value; } }

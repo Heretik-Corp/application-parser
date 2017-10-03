@@ -7,7 +7,7 @@ namespace ApplicationParser
 {
     public static partial class Writer
     {
-        private static PropertyWriter propWriter = new PropertyWriter();
+        private static ClassWriter classWriter = new ClassWriter();
         private static ScriptWriter scriptWriter = new ScriptWriter();
         private static TabWriter tabWriter = new TabWriter();
         private static ApplicationWriter applicationWriter = new ApplicationWriter();
@@ -59,24 +59,7 @@ namespace ApplicationParser
 
         public static string WriteClasses(this Application app)
         {
-            var sb = new StringBuilder();
-            foreach (var obj in app.Objects)
-            {
-                //TODO: this needs Artifact Type Guids
-                if (obj.Name.Equals("Document"))
-                {
-                    sb.AppendLine($"\t{WriterUtils.GetClass(obj.Name)} : DocumentWrapper");
-                }
-                else
-                {
-                    sb.AppendLine($"\t{WriterUtils.GetClass(obj.Name)} : RDOWrapper");
-                }
-                sb.AppendLine("\t{");
-                sb.Append(propWriter.GetProperties(obj));
-                sb.AppendLine("\t}");
-                sb.AppendLine();
-            }
-            return sb.ToString();
+            return classWriter.WriteClasses(app);
         }
 
         public static string WriteScripts(this Application app)

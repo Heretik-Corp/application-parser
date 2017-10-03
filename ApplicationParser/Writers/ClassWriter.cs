@@ -7,34 +7,74 @@ using System.Threading.Tasks;
 
 namespace Heretik.ApplicationParser.Writers
 {
-    public class PropertyWriter
+    public class ClassWriter
     {
 
-        public string GetProperties(ObjectDef objDef)
+        public virtual string WriteClasses(Application app)
         {
             var sb = new StringBuilder();
-            foreach (var field in objDef.Fields)
+            foreach (var obj in app.Objects)
             {
-                //TODO: does relativity's fields support ArtifactId?
-                if(field.Name == "ArtifactID")
-                {
-                    continue;
-                }
-                var parseString = $"Guid.Parse({WriterUtils.GetFieldGuidClass(objDef)}.{field.Name})";
-                var fieldType = GetFieldType(field);
-                sb.Append($"\t\tpublic {fieldType} {field.Name}");
-                sb.Append(" {");
-                sb.Append($" get {{ return base.Artifact.GetValue<{fieldType}>({parseString}); }}");
-                sb.Append($" set {{ base.Artifact.SetValue({parseString}, value); }}");
-                sb.Append(" }");
+                WriteClassName(obj, sb);
+                sb.AppendLine("\t{");
+                sb.Append(this.GetProperties(obj));
+                sb.AppendLine("\t}");
                 sb.AppendLine();
             }
             return sb.ToString();
         }
 
+        protected virtual void WriteClassName(ObjectDef obj, StringBuilder sb)
+        {
+            if (obj.Name.Equals("Document"))
+            {
+                sb.AppendLine($"\t{WriterUtils.GetClass(obj.Name)} : DocumentWrapper");
+            }
+            else
+            {
+                sb.AppendLine($"\t{WriterUtils.GetClass(obj.Name)} : RDOWrapper");
+            }
+        }
+
+        protected virtual string GetProperties(ObjectDef objDef)
+        {
+            var sb = new StringBuilder();
+            var fields = (objDef.Fields ?? new List<Field>()).ToList();
+            objDef.Fields = fields;
+            foreach (var field in objDef.Fields)
+            {
+                if(field.Name == "ArtifactID")
+                {
+                    continue;
+                }
+                WriteField(objDef, field, sb);
+            }
+            return sb.ToString();
+        }
+
+        protected virtual void WriteField(ObjectDef objDef, Field field, StringBuilder sb)
+        {
+            var fieldType = GetFieldType(field);
+
+            sb.Append($"\t\tpublic {fieldType} {field.Name}");
+            sb.Append("\t\t{");
+            if (field.IsSystem)
+            {
+                sb.Append($" get {{ return base.Artifact.{field.Name}; }}");
+                sb.Append($" set {{ base.Artifact.{field.Name} = value; }}");
+            }
+            else
+            {
+                var parseString = $"Guid.Parse({WriterUtils.GetFieldGuidClass(objDef)}.{field.Name})";
+                sb.Append($" get {{ return base.Artifact.GetValue<{fieldType}>({parseString}); }}");
+                sb.Append($" set {{ base.Artifact.SetValue({parseString}, value); }}");
+            }
+            sb.Append("\t\t}");
+        }
+
         private static string GetFieldType(Field field)
         {
-            switch ((FieldTypes)field.FieldTypeId)
+            switch (field.FieldType)
             {
                 case FieldTypes.FixedLength:
                 case FieldTypes.LongText:
@@ -64,3 +104,4 @@ namespace Heretik.ApplicationParser.Writers
         }
     }
 }
+

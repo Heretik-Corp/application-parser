@@ -13,7 +13,7 @@ namespace ApplicationParser
             var app = new Application();
             app.Guid = xmlDoc.SelectNodes("Application").Item(0).SelectNodes("Guid").Item(0).InnerText;
             app.Name = xmlDoc.SelectNodes("Application").Item(0).SelectNodes("Name").Item(0).InnerText;
-            
+
             app.Objects = ParseObjects(xmlDoc);
 
             var tabList = new List<Tab>();
@@ -73,10 +73,7 @@ namespace ApplicationParser
             foreach (XmlNode field in systemFields)
             {
                 var fieldDef = ParseField(field, true);
-                if (fieldDef != null)
-                {
-                    fieldList.Add(fieldDef);
-                }
+                fieldList.Add(fieldDef);
             }
             obj.Fields = fieldList;
             return obj;
@@ -85,24 +82,25 @@ namespace ApplicationParser
         private Field ParseField(XmlNode field, bool system = false)
         {
             var guid = field.SelectNodes("Guid").Item(0);
-            var name = field.SelectNodes("DisplayName").Item(0);
-            var fieldId = int.Parse(field.SelectNodes("FieldTypeId").Item(0).InnerText);
+            var name = field.SelectNodes("Name").Item(0);
+            var fieldId = (FieldTypes)int.Parse(field.SelectNodes("FieldTypeId").Item(0).InnerText);
             var artifact = new Field
             {
                 Guid = guid.InnerText,
                 Name = name.InnerText,
-                FieldTypeId = fieldId
+                FieldType = fieldId,
+                IsSystem = system
+
             };
-            if (artifact.Name.Contains("System") && system)
-            {
-                return null;
-            }
             var choiceList = new List<ArtifactDef>();
-            var codes = field.SelectNodes("Codes").Item(0).SelectNodes("Code");
-            foreach (XmlNode code in codes)
+            if (field.SelectNodes("Codes").Count > 0)
             {
-                var choiceDef = ParseNode<Field>(code);
-                choiceList.Add(choiceDef);
+                var codes = field.SelectNodes("Codes").Item(0).SelectNodes("Code");
+                foreach (XmlNode code in codes)
+                {
+                    var choiceDef = ParseNode<Field>(code);
+                    choiceList.Add(choiceDef);
+                }
             }
             artifact.Choices = choiceList;
             return artifact;

@@ -1,6 +1,6 @@
 ﻿namespace ApplicationParser
 {
-    internal enum FieldTypes
+    public enum FieldTypes
     {
         FixedLength = 0,
         WholeNumber = 1,
