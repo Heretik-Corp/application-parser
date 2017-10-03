@@ -82,7 +82,7 @@ namespace ApplicationParser
         private Field ParseField(XmlNode field, bool system = false)
         {
             var guid = field.SelectNodes("Guid").Item(0);
-            var name = field.SelectNodes("Name").Item(0);
+            var name = field.SelectNodes("DisplayName").Item(0);
             var fieldId = (FieldTypes)int.Parse(field.SelectNodes("FieldTypeId").Item(0).InnerText);
             var artifact = new Field
             {

@@ -72,7 +72,7 @@ namespace Heretik.ApplicationParser.Writers
             sb.Append("\t\t}");
         }
 
-        private static string GetFieldType(Field field)
+        protected string GetFieldType(Field field)
         {
             switch (field.FieldType)
             {

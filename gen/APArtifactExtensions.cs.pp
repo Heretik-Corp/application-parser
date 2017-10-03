@@ -33,7 +33,7 @@ namespace $rootnamespace$
             {
                 return false;
             }
-            value = GetValue<T>(fieldGuid);
+            value = GetValue<T>(artifact, fieldGuid);
             return true;
         }
     }

@@ -88,7 +88,7 @@ namespace ApplicationParser.Tests
       <Name>A custom Object</Name>
         <Fields>
 <Field>
-        <Name>test field name</Name>
+        <DisplayName>test field name</DisplayName>
         <Guid>ce3f1380-7535-49f1-b45b-ce40dc9d0742</Guid>
         <FieldTypeId>1</FieldTypeId>
 </Field>
@@ -130,7 +130,7 @@ namespace ApplicationParser.Tests
         <Fields />
         <SystemFields>
             <SystemField>
-                <Name>systemField</Name>
+                <DisplayName>systemField</DisplayName>
                 <Guid>ce3f1380-7535-49f1-b45b-ce40dc9d0742</Guid>
                 <FieldTypeId>1</FieldTypeId>
             </SystemField>

@@ -13,7 +13,6 @@ namespace Heretik.ApplicationParser.Writers
             {
                 foreach (var field in obj.Fields.Where(x => x.Choices.Any()))
                 {
-                    //todo this needs More than just fieldName
                     str.AppendLine($"\t{WriterUtils.GetClass(obj.Name + field.Name + "ChoiceGuids")}");
                     str.AppendLine("\t{");
                     foreach (var choice in field.Choices)
