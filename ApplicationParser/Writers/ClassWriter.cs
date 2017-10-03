@@ -69,7 +69,7 @@ namespace Heretik.ApplicationParser.Writers
                 sb.Append($" get {{ return base.Artifact.GetValue<{fieldType}>({parseString}); }}");
                 sb.Append($" set {{ base.Artifact.SetValue({parseString}, value); }}");
             }
-            sb.Append("\n\t\t}");
+            sb.AppendLine("\t\t}");
         }
 
         protected string GetFieldType(Field field)
