@@ -69,7 +69,7 @@ namespace Heretik.ApplicationParser.Writers
                 sb.Append($" get {{ return base.Artifact.GetValue<{fieldType}>({parseString}); }}");
                 sb.Append($" set {{ base.Artifact.SetValue({parseString}, value); }}");
             }
-            sb.Append("\t\t}");
+            sb.Append("\n\t\t}");
         }
 
         protected string GetFieldType(Field field)
@@ -96,8 +96,10 @@ namespace Heretik.ApplicationParser.Writers
                     return "DateTime?";
                 case FieldTypes.MultiObject:
                     return "FieldValueList<Artifact>";
-                case FieldTypes.File:
                 case FieldTypes.MultiChoice:
+                    return "MultiChoiceFieldValueList";
+                case FieldTypes.File:
+                    return "string";
                 default:
                     return "object";
             }
