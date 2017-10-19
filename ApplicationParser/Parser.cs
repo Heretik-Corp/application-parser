@@ -11,8 +11,8 @@ namespace ApplicationParser
             var xmlDoc = new XmlDocument(); // Create an XML document object
             xmlDoc.LoadXml(xml);
             var app = new Application();
-            app.Guid = xmlDoc.SelectNodes("Application").Item(0).SelectNodes("Guid").Item(0).InnerText;
-            app.Name = xmlDoc.SelectNodes("Application").Item(0).SelectNodes("Name").Item(0).InnerText;
+            app.Guid = xmlDoc.SelectSingleNode("Application").SelectSingleNode("Guid").InnerText;
+            app.Name = xmlDoc.SelectSingleNode("Application").SelectSingleNode("Name").InnerText;
 
             app.Objects = ParseObjects(xmlDoc);
 
@@ -50,17 +50,23 @@ namespace ApplicationParser
             }
         }
 
+        private bool IsWhitelistedSystemField(string displayName)
+        {
+            List<string> whitelist = new List<string>
+            {
+                "Control Number"
+            };
+
+            return whitelist.Any(a => a.ToLower() == displayName.ToLower());
+        }
+
         private ObjectDef ParseObject(XmlNode node)
         {
             var obj = new ObjectDef();
-            obj.Name = node.SelectNodes("Name").Item(0).InnerText;
-            obj.Guid = node.SelectNodes("Guid").Item(0).InnerText;
-            var fields = node.SelectNodes("Fields")
-                .Item(0)
-                .SelectNodes("Field");
-            var systemFields = node.SelectNodes("SystemFields")
-                .Item(0)
-                .SelectNodes("SystemField");
+            obj.Name = node.SelectSingleNode("Name").InnerText;
+            obj.Guid = node.SelectSingleNode("Guid").InnerText;
+            var fields = node.SelectSingleNode("Fields").SelectNodes("Field");
+            var systemFields = node.SelectSingleNode("SystemFields").SelectNodes("SystemField");
             var fieldList = new List<Field>();
             foreach (XmlNode field in fields)
             {
@@ -72,8 +78,14 @@ namespace ApplicationParser
             }
             foreach (XmlNode field in systemFields)
             {
-                var fieldDef = ParseField(field, true);
-                fieldList.Add(fieldDef);
+                if (IsWhitelistedSystemField(field.SelectSingleNode("DisplayName").InnerText))
+                {
+                    var fieldDef = ParseField(field, false);
+                    if (fieldDef != null)
+                    {
+                        fieldList.Add(fieldDef);
+                    }
+                }
             }
             obj.Fields = fieldList;
             return obj;
@@ -81,9 +93,14 @@ namespace ApplicationParser
 
         private Field ParseField(XmlNode field, bool system = false)
         {
-            var guid = field.SelectNodes("Guid").Item(0);
-            var name = field.SelectNodes("DisplayName").Item(0);
-            var fieldId = (FieldTypes)int.Parse(field.SelectNodes("FieldTypeId").Item(0).InnerText);
+            if (system)
+            {
+                return null;
+            }
+
+            var guid = field.SelectSingleNode("Guid");
+            var name = field.SelectSingleNode("DisplayName");
+            var fieldId = (FieldTypes)int.Parse(field.SelectSingleNode("FieldTypeId").InnerText);
             var artifact = new Field
             {
                 Guid = guid.InnerText,
@@ -95,7 +112,7 @@ namespace ApplicationParser
             var choiceList = new List<ArtifactDef>();
             if (field.SelectNodes("Codes").Count > 0)
             {
-                var codes = field.SelectNodes("Codes").Item(0).SelectNodes("Code");
+                var codes = field.SelectSingleNode("Codes").SelectNodes("Code");
                 foreach (XmlNode code in codes)
                 {
                     var choiceDef = ParseNode<Field>(code);

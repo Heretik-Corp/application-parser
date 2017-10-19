@@ -1,7 +1,7 @@
-﻿using System.Xml;
-using System.Linq;
-using Xunit;
+﻿using System.Linq;
+using System.Xml;
 using Microsoft.CodeAnalysis;
+using Xunit;
 
 namespace ApplicationParser.Tests
 {
@@ -116,7 +116,51 @@ namespace ApplicationParser.Tests
         }
 
         [Fact]
-        public void ParseFields_SystemFieldsPassIn_ReturnsTrueForFieldDef()
+        public void ParseFields_SystemFieldsPassIn_ReturnsOnlyControl()
+        {
+            //ARRANGE
+            var xmlTemplate = @"<?xml version=""1.0"" encoding=""UTF - 8""?>
+<Application xmlns:xsd=""http://www.w3.org/2001/XMLSchema"" xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"">
+  <Objects>
+    <Object>
+      <ArtifactId>1035231</ArtifactId>
+      <DescriptorArtifactTypeId>10</DescriptorArtifactTypeId>
+      <Guid>15c36703-74ea-4ff8-9dfb-ad30ece7530d</Guid>
+      <Name>A custom Object</Name>
+        <Fields />
+        <SystemFields>
+            <SystemField>
+                <DisplayName>Control Number</DisplayName>
+                <Guid>ce3f1380-7535-49f1-b45b-ce40dc9d0742</Guid>
+                <FieldTypeId>1</FieldTypeId>
+            </SystemField>
+            <SystemField>
+                <DisplayName>systemField</DisplayName>
+                <Guid>abcf1380-7535-49f1-b45b-ce40dc9d0742</Guid>
+                <FieldTypeId>1</FieldTypeId>
+            </SystemField>
+        </SystemFields>
+    </Object>
+</Objects>
+</Application>
+";
+
+            //ACT
+            var parser = new Parser();
+            var xmlDoc = new XmlDocument();
+            xmlDoc.LoadXml(xmlTemplate);
+            var objects = parser.ParseObjects(xmlDoc).ToList();
+
+            //ASSERT
+            Assert.Equal(1, objects.Count);
+            var field = objects.First().Fields.First();
+
+            Assert.Equal("Control Number", field.RawName);
+            Assert.False(field.IsSystem);
+        }
+
+        [Fact]
+        public void ParseFields_SystemFieldsPassIn_NotControlNumber_Returns_Nothing()
         {
             //ARRANGE
             var xmlTemplate = @"<?xml version=""1.0"" encoding=""UTF - 8""?>
@@ -147,10 +191,7 @@ namespace ApplicationParser.Tests
             var objects = parser.ParseObjects(xmlDoc).ToList();
 
             //ASSERT
-            var field = objects.First().Fields.First();
-
-            Assert.Equal("systemField", field.RawName);
-            Assert.True(field.IsSystem);
+            Assert.Empty(objects.First().Fields);
         }
     }
 }
