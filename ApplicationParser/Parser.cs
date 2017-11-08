@@ -54,7 +54,8 @@ namespace ApplicationParser
         {
             List<string> whitelist = new List<string>
             {
-                "Control Number"
+                "Control Number",
+                "Extracted Text"
             };
 
             return whitelist.Any(a => a.ToLower() == displayName.ToLower());
