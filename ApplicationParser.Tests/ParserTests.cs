@@ -160,6 +160,50 @@ namespace ApplicationParser.Tests
         }
 
         [Fact]
+        public void ParseFields_SystemFieldsPassIn_ReturnsExtractedText()
+        {
+            //ARRANGE
+            var xmlTemplate = @"<?xml version=""1.0"" encoding=""UTF - 8""?>
+<Application xmlns:xsd=""http://www.w3.org/2001/XMLSchema"" xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"">
+  <Objects>
+    <Object>
+      <ArtifactId>1035231</ArtifactId>
+      <DescriptorArtifactTypeId>10</DescriptorArtifactTypeId>
+      <Guid>15c36703-74ea-4ff8-9dfb-ad30ece7530d</Guid>
+      <Name>A custom Object</Name>
+        <Fields />
+        <SystemFields>
+            <SystemField>
+                <DisplayName>Extracted Text</DisplayName>
+                <Guid>ce3f1380-7535-49f1-b45b-ce40dc9d0742</Guid>
+                <FieldTypeId>1</FieldTypeId>
+            </SystemField>
+            <SystemField>
+                <DisplayName>systemField</DisplayName>
+                <Guid>abcf1380-7535-49f1-b45b-ce40dc9d0742</Guid>
+                <FieldTypeId>1</FieldTypeId>
+            </SystemField>
+        </SystemFields>
+    </Object>
+</Objects>
+</Application>
+";
+
+            //ACT
+            var parser = new Parser();
+            var xmlDoc = new XmlDocument();
+            xmlDoc.LoadXml(xmlTemplate);
+            var objects = parser.ParseObjects(xmlDoc).ToList();
+
+            //ASSERT
+            Assert.Equal(1, objects.Count);
+            var field = objects.First().Fields.First();
+
+            Assert.Equal("Extracted Text", field.RawName);
+            Assert.False(field.IsSystem);
+        }
+
+        [Fact]
         public void ParseFields_SystemFieldsPassIn_NotControlNumber_Returns_Nothing()
         {
             //ARRANGE

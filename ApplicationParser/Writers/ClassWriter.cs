@@ -55,9 +55,20 @@ namespace Heretik.ApplicationParser.Writers
         protected virtual void WriteField(ObjectDef objDef, Field field, StringBuilder sb)
         {
             var fieldType = GetFieldType(field);
+            //Fields causing problems:
+            //ControlNumber reason => is system but not on document object
+            //ExtractedText reason => is system but not on document object
+            //Name reason => Maps to textIdentifier
+            //Following fields are "system fields" but not on the Artifact Property:
+            //ModelFileIcon
+            //ModelFileSize
+            //ModelText
+            //HeretikAnalysisSet on object HeretikAnalysisDocument
+            //HeretikProfile on object HeretikTrainingDocument
 
+            //We also need to support ParentArtifact of type Artifact isSystem:true
             sb.Append($"\t\tpublic {fieldType} {field.Name}");
-            sb.Append("\t\t{");
+            sb.Append(" {");
             if (field.IsSystem)
             {
                 sb.Append($" get {{ return base.Artifact.{field.Name}; }}");
@@ -74,6 +85,12 @@ namespace Heretik.ApplicationParser.Writers
 
         protected string GetFieldType(Field field)
         {
+            //This is actually a relativity bug
+            if(field.IsSystem && field.Name.EndsWith("By", StringComparison.CurrentCultureIgnoreCase))
+            {
+                field.FieldType = FieldTypes.User;
+            }
+
             switch (field.FieldType)
             {
                 case FieldTypes.FixedLength:
