@@ -79,13 +79,10 @@ namespace ApplicationParser
             }
             foreach (XmlNode field in systemFields)
             {
-                if (IsWhitelistedSystemField(field.SelectSingleNode("DisplayName").InnerText))
+                var fieldDef = ParseField(field, true);
+                if (fieldDef != null)
                 {
-                    var fieldDef = ParseField(field, false);
-                    if (fieldDef != null)
-                    {
-                        fieldList.Add(fieldDef);
-                    }
+                    fieldList.Add(fieldDef);
                 }
             }
             obj.Fields = fieldList;
@@ -94,11 +91,6 @@ namespace ApplicationParser
 
         private Field ParseField(XmlNode field, bool system = false)
         {
-            if (system)
-            {
-                return null;
-            }
-
             var guid = field.SelectSingleNode("Guid");
             var name = field.SelectSingleNode("DisplayName");
             var fieldId = (FieldTypes)int.Parse(field.SelectSingleNode("FieldTypeId").InnerText);
