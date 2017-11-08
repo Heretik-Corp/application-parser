@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Heretik.ApplicationParser.Writers
 {
-    class WriterUtils
+    public class WriterUtils
     {
         public static string GetString(ArtifactDef obj)
         {

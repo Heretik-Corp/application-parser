@@ -43,7 +43,7 @@ namespace Heretik.ApplicationParser.Writers
             objDef.Fields = fields;
             foreach (var field in objDef.Fields)
             {
-                if(field.Name == "ArtifactID")
+                if (field.Name == "ArtifactID")
                 {
                     continue;
                 }
@@ -55,24 +55,17 @@ namespace Heretik.ApplicationParser.Writers
         protected virtual void WriteField(ObjectDef objDef, Field field, StringBuilder sb)
         {
             var fieldType = GetFieldType(field);
-            //Fields causing problems:
-            //ControlNumber reason => is system but not on document object
-            //ExtractedText reason => is system but not on document object
-            //Name reason => Maps to textIdentifier
-            //Following fields are "system fields" but not on the Artifact Property:
-            //ModelFileIcon
-            //ModelFileSize
-            //ModelText
-            //HeretikAnalysisSet on object HeretikAnalysisDocument
-            //HeretikProfile on object HeretikTrainingDocument
-
             //We also need to support ParentArtifact of type Artifact isSystem:true
             sb.Append($"\t\tpublic {fieldType} {field.Name}");
             sb.Append(" {");
-            if (field.IsSystem)
+            if (field.IsSystem && field.Name.StartsWith("System")) //this might cause a problem but for now I'm lazy
             {
                 sb.Append($" get {{ return base.Artifact.{field.Name}; }}");
-                sb.Append($" set {{ base.Artifact.{field.Name} = value; }}");
+            }
+            else if (field.IsSystem && field.Name.Equals("Name"))
+            {
+                sb.Append($" get {{ return base.Artifact.TextIdentifier; }}");
+                sb.Append($" set {{ base.Artifact.TextIdentifier = value; }}");
             }
             else
             {
@@ -86,7 +79,8 @@ namespace Heretik.ApplicationParser.Writers
         protected string GetFieldType(Field field)
         {
             //This is actually a relativity bug
-            if(field.IsSystem && field.Name.EndsWith("By", StringComparison.CurrentCultureIgnoreCase))
+            if (field.IsSystem && (field.Name.Equals("SystemLastModifiedBy", StringComparison.CurrentCultureIgnoreCase) ||
+                                   field.Name.Equals("SystemCreatedBy", StringComparison.CurrentCultureIgnoreCase)))
             {
                 field.FieldType = FieldTypes.User;
             }

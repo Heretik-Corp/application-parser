@@ -83,8 +83,65 @@ namespace ApplicationParser.Tests.Writers
 
             //ASSERT
             Assert.Contains(members, 
-            x => x.ToString().EqualsIgnoreWhitespace("public User SystemCreatedBy { get { return base.Artifact.SystemCreatedBy; } set { base.Artifact.SystemCreatedBy = value; } }"));
+            x => x.ToString().EqualsIgnoreWhitespace("public User SystemCreatedBy { get { return base.Artifact.SystemCreatedBy; } }"));
 
+        }
+
+        [Fact]
+        public void GetProperties_SystemFieldsThatAreNotOnObject_CreatedCorrectly()
+        {
+            //ARRANGE
+            var fieldGuid = Guid.NewGuid();
+            var def = new ObjectDef();
+            def.Fields = new List<Field>
+            {
+                new Field("ExtractedText", FieldTypes.LongText, true)
+                {
+                    Guid = fieldGuid.ToString()
+                }
+            };
+
+            //ACT
+            var writer = new ClassWriter();
+            var text = writer.WriteClasses(new Application
+            {
+                Objects = new List<ObjectDef> { def }
+            });
+
+            var members = ParseTestHelper.GetProperties(text);
+
+            //ASSERT
+            //ASSERT
+            Assert.Contains(members,
+            x => x.ToString()
+            .EqualsIgnoreWhitespace("public string ExtractedText { get { return base.Artifact.GetValue<string>(Guid.Parse(FieldGuids.ExtractedText)); } set { base.Artifact.SetValue(Guid.Parse(FieldGuids.ExtractedText), value); } }"));
+
+    }
+
+        [Fact]
+        public void GetProperties_NameFieldsThatAreNotOnObject_CreatedTextIdentifier()
+        {
+            //ARRANGE
+            var def = new ObjectDef();
+            def.Fields = new List<Field>
+            {
+                new Field("Name", FieldTypes.FixedLength, true)
+            };
+
+            //ACT
+            var writer = new ClassWriter();
+            var text = writer.WriteClasses(new Application
+            {
+                Objects = new List<ObjectDef> { def }
+            });
+
+            var members = ParseTestHelper.GetProperties(text);
+
+            //ASSERT
+            //ASSERT
+            Assert.Contains(members,
+            x => x.ToString()
+            .EqualsIgnoreWhitespace("public string Name { get { return base.Artifact.TextIdentifier; } set { base.Artifact.TextIdentifier = value; } }"));
         }
     }
 }
