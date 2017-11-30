@@ -7,6 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApplicationParser.Core", "A
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "nuget", "nuget", "{C2086ECD-680B-4BB6-B8B6-6D3DFCB2B4E7}"
 	ProjectSection(SolutionItems) = preProject
+		nuget\ApplicationParser.Core.nuspec = nuget\ApplicationParser.Core.nuspec
 		nuget\ApplicationParser.nuspec = nuget\ApplicationParser.nuspec
 	EndProjectSection
 EndProject
