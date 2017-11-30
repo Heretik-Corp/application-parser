@@ -1,4 +1,4 @@
-﻿<?xml version="1.0"?>
+<?xml version="1.0"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>Heretik.ApplicationParser</id>
@@ -8,7 +8,12 @@
     <projectUrl>https://github.com/dvbarnes/Application-Parser</projectUrl>
     <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>Application parser allows a developer of a Relativity application to easily extract the application's metadata.</description>
+    <description>
+      Application parser allows a developer of a Relativity application to easily extract the application's metadata. This file will generate a T4 templates that will create objects that match your application.
+    </description>
     <tags></tags>
+    <dependencies>
+        <dependency id="ApplicationParser.Core" version="10.2.3" />
+    </dependencies>
   </metadata>
 </package>
