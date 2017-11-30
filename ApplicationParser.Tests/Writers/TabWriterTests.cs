@@ -1,11 +1,5 @@
 ﻿using Heretik.ApplicationParser.Writers;
-using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace ApplicationParser.Tests.Writers

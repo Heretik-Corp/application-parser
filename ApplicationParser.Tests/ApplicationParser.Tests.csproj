@@ -37,6 +37,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CodeAnalysis, Version=2.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.CodeAnalysis.Common.2.3.2\lib\netstandard1.3\Microsoft.CodeAnalysis.dll</HintPath>
@@ -143,9 +146,13 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ApplicationParser\ApplicationParser.csproj">
+    <ProjectReference Include="..\ApplicationParser.Generator.T4\ApplicationParser.Generator.T4.csproj">
+      <Project>{28e42eac-61fc-4cb2-9a0e-d6491e9c7c31}</Project>
+      <Name>ApplicationParser.Generator.T4</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ApplicationParser\ApplicationParser.Core.csproj">
       <Project>{0c359651-46f6-4536-8b3e-c7531ff0cc68}</Project>
-      <Name>ApplicationParser</Name>
+      <Name>ApplicationParser.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
