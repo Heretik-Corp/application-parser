@@ -13,7 +13,7 @@
     </description>
     <tags></tags>
     <dependencies>
-        <dependency id="ApplicationParser.Core" version="{{version}}" />
+        <dependency id="Heretik.ApplicationParser.Core" version="{{version}}" />
     </dependencies>
   </metadata>
 </package>
