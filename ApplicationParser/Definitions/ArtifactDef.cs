@@ -22,7 +22,9 @@
                 .Replace("&", "And")
                 .Replace("^", "carrot")
                 .Replace(")", string.Empty)
-                .Replace("(", string.Empty);
+                .Replace("(", string.Empty)
+                .Replace(",", string.Empty)
+                .Replace("/", string.Empty);
         }
     }
 }
