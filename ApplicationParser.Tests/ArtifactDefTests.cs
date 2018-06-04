@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Xunit;
+﻿using Xunit;
 
 namespace ApplicationParser.Tests
 {
@@ -17,6 +12,8 @@ namespace ApplicationParser.Tests
         [InlineData("He&llo", "HeAndllo")]
         [InlineData("::Hello", "_Hello")]
         [InlineData("-Hello", "_Hello")]
+        [InlineData("Hello,There", "HelloThere")]
+        [InlineData("Hello/There", "HelloThere")]
         public void EncodeName_PassInNameWithBadChars_ReturnsCleanName(string test, string expected)
         {
             //ARRANGE
