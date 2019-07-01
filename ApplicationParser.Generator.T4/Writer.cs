@@ -1,7 +1,4 @@
 ﻿using Heretik.ApplicationParser.Writers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 
 namespace ApplicationParser
@@ -30,7 +27,7 @@ namespace ApplicationParser
         public static string WriteObjectGuids(this Application app)
         {
             var str = new StringBuilder();
-            foreach (var obj in app.Objects)
+            foreach (var obj in classWriter.FilterClassNames(app.Objects))
             {
                 str.AppendLine($"\t{WriterUtils.GetClass(WriterUtils.GetFieldGuidClass(obj))}");
                 str.AppendLine("\t{");

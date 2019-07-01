@@ -50,17 +50,6 @@ namespace ApplicationParser
             }
         }
 
-        private bool IsWhitelistedSystemField(string displayName)
-        {
-            List<string> whitelist = new List<string>
-            {
-                "Control Number",
-                "Extracted Text"
-            };
-
-            return whitelist.Any(a => a.ToLower() == displayName.ToLower());
-        }
-
         private ObjectDef ParseObject(XmlNode node)
         {
             var obj = new ObjectDef();

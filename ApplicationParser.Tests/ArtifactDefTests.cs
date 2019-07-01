@@ -14,6 +14,9 @@ namespace ApplicationParser.Tests
         [InlineData("-Hello", "_Hello")]
         [InlineData("Hello,There", "HelloThere")]
         [InlineData("Hello/There", "HelloThere")]
+        [InlineData("#HelloThere", "h_HelloThere")]
+        [InlineData("Hello#There", "Hello_There")]
+        [InlineData("HelloThere#", "HelloThere_h")]
         public void EncodeName_PassInNameWithBadChars_ReturnsCleanName(string test, string expected)
         {
             //ARRANGE

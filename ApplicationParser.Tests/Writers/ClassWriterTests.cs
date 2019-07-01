@@ -1,16 +1,49 @@
 ﻿using Heretik.ApplicationParser.Writers;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace ApplicationParser.Tests.Writers
 {
     public class ClassWriterTests
     {
+        private readonly ClassWriter _writer;
+
+        public ClassWriterTests()
+        {
+            _writer = new ClassWriter();
+        }
+
+        #region WriteClasses
+        [Theory]
+        [InlineData("Field")]
+        [InlineData("field")]
+        public void WriteClasses_ClassNameIsBlackListed_SkipsClass(string className)
+        {
+            //ARRANGE
+            var def = new ObjectDef();
+            def.Name = className;
+            def.Fields = new List<Field>()
+            {
+                new Field
+                {
+                    Name = "ArtifactID"
+                }
+            };
+
+            //ACT
+            var text = _writer.WriteClasses(new Application
+            {
+                Objects = new List<ObjectDef> { def }
+            });
+
+            //ASSERT
+            Assert.Empty(text);
+        }
+        #endregion
+
+        #region GetProperties
         [Fact]
         public void GetProperties_PassInArtifactID_skips()
         {
@@ -25,8 +58,7 @@ namespace ApplicationParser.Tests.Writers
             };
 
             //ACT
-            var writer = new ClassWriter();
-            var text = writer.WriteClasses(new Application
+            var text = _writer.WriteClasses(new Application
             {
                 Objects = new List<ObjectDef> { def }
             });
@@ -34,7 +66,7 @@ namespace ApplicationParser.Tests.Writers
             //ASSERT
             var members = ParseTestHelper.GetProperties(text).Select(x => x.Identifier.Text);
 
-            Assert.DoesNotContain(members, x=>x == "ArtifactID");
+            Assert.DoesNotContain(members, x => x == "ArtifactID");
         }
         [Theory]
         [InlineData("SystemCreatedBy", FieldTypes.User, "User")]
@@ -51,8 +83,7 @@ namespace ApplicationParser.Tests.Writers
             };
 
             //ACT
-            var writer = new ClassWriter();
-            var text = writer.WriteClasses(new Application
+            var text = _writer.WriteClasses(new Application
             {
                 Objects = new List<ObjectDef> { def }
             });
@@ -60,7 +91,7 @@ namespace ApplicationParser.Tests.Writers
             var members = ParseTestHelper.GetProperties(text);
 
             //ASSERT
-            Assert.Contains(members, x=>x.Identifier.Text == fieldName && x.Type.ToString() == fieldTypeName);
+            Assert.Contains(members, x => x.Identifier.Text == fieldName && x.Type.ToString() == fieldTypeName);
         }
 
         [Fact]
@@ -73,8 +104,7 @@ namespace ApplicationParser.Tests.Writers
             };
 
             //ACT
-            var writer = new ClassWriter();
-            var text = writer.WriteClasses(new Application
+            var text = _writer.WriteClasses(new Application
             {
                 Objects = new List<ObjectDef> { def }
             });
@@ -82,7 +112,7 @@ namespace ApplicationParser.Tests.Writers
             var members = ParseTestHelper.GetProperties(text);
 
             //ASSERT
-            Assert.Contains(members, 
+            Assert.Contains(members,
             x => x.ToString().EqualsIgnoreWhitespace("public User SystemCreatedBy { get { return base.Artifact.SystemCreatedBy; } }"));
 
         }
@@ -102,8 +132,7 @@ namespace ApplicationParser.Tests.Writers
             };
 
             //ACT
-            var writer = new ClassWriter();
-            var text = writer.WriteClasses(new Application
+            var text = _writer.WriteClasses(new Application
             {
                 Objects = new List<ObjectDef> { def }
             });
@@ -111,12 +140,11 @@ namespace ApplicationParser.Tests.Writers
             var members = ParseTestHelper.GetProperties(text);
 
             //ASSERT
-            //ASSERT
             Assert.Contains(members,
             x => x.ToString()
             .EqualsIgnoreWhitespace("public string ExtractedText { get { return base.Artifact.GetValue<string>(Guid.Parse(FieldGuids.ExtractedText)); } set { base.Artifact.SetValue(Guid.Parse(FieldGuids.ExtractedText), value); } }"));
 
-    }
+        }
 
         [Fact]
         public void GetProperties_NameFieldsThatAreNotOnObject_CreatedTextIdentifier()
@@ -129,8 +157,7 @@ namespace ApplicationParser.Tests.Writers
             };
 
             //ACT
-            var writer = new ClassWriter();
-            var text = writer.WriteClasses(new Application
+            var text = _writer.WriteClasses(new Application
             {
                 Objects = new List<ObjectDef> { def }
             });
@@ -143,5 +170,7 @@ namespace ApplicationParser.Tests.Writers
             x => x.ToString()
             .EqualsIgnoreWhitespace("public string Name { get { return base.Artifact.TextIdentifier; } set { base.Artifact.TextIdentifier = value; } }"));
         }
+        #endregion
+
     }
 }

@@ -1,5 +1,4 @@
-﻿using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
+﻿using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System.Collections.Generic;
 using Xunit;
 
@@ -74,6 +73,29 @@ namespace ApplicationParser.Tests
             //ASSERT
             var classDef = ((IdentifierNameSyntax)classDefinition.BaseList.Types[0].Type);
             Assert.Equal("DocumentWrapper", classDef.Identifier.Text);
+        }
+
+        [Theory]
+        [InlineData("field")]
+        [InlineData("Field")]
+        public void WriteClasses_PassInBlackListObject_SkipsBlackListObject(string objectName)
+        {
+            //ARRANGE
+
+            //ACT
+            var text = Writer.WriteClasses(new Application
+            {
+                Objects = new List<ObjectDef>
+                {
+                    new ObjectDef
+                    {
+                        Name =objectName,
+                        Fields = new List<Field>()
+                    }
+                }
+            });
+            //ASSERT
+            Assert.Empty(text);
         }
     }
 }

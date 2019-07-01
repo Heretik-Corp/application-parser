@@ -1,4 +1,6 @@
-﻿namespace ApplicationParser
+﻿using System.Text.RegularExpressions;
+
+namespace ApplicationParser
 {
     public class ArtifactDef
     {
@@ -15,12 +17,14 @@
         //move to utils class?
         public static string EncodeName(string text)
         {
-            return text
-                .Replace("%", "Percent")
+            text = Regex.Replace(text, "^#", "h_");
+            text = Regex.Replace(text, "#$", "_h");
+            return text.Replace("%", "Percent")
                 .Replace("::", "_")
                 .Replace("-", "_")
                 .Replace("&", "And")
                 .Replace("^", "carrot")
+                .Replace("#", "_")
                 .Replace(")", string.Empty)
                 .Replace("(", string.Empty)
                 .Replace(",", string.Empty)

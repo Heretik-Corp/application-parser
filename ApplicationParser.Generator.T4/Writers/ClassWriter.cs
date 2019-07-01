@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Heretik.ApplicationParser.Writers
 {
@@ -13,7 +12,7 @@ namespace Heretik.ApplicationParser.Writers
         public virtual string WriteClasses(Application app)
         {
             var sb = new StringBuilder();
-            foreach (var obj in app.Objects)
+            foreach (var obj in FilterClassNames(app.Objects))
             {
                 WriteClassName(obj, sb);
                 sb.AppendLine("\t{");
@@ -22,6 +21,11 @@ namespace Heretik.ApplicationParser.Writers
                 sb.AppendLine();
             }
             return sb.ToString();
+        }
+
+        public virtual IEnumerable<ObjectDef> FilterClassNames(IEnumerable<ObjectDef> objects)
+        {
+            return objects.Where(x => !x.Name.Equals("field", StringComparison.InvariantCultureIgnoreCase));
         }
 
         protected virtual void WriteClassName(ObjectDef obj, StringBuilder sb)
