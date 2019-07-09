@@ -49,7 +49,39 @@ namespace ApplicationParser.Tests
             //ASSERT
             var classDef = ((IdentifierNameSyntax)classDefinition.BaseList.Types[0].Type);
             Assert.Equal("RDOWrapper", classDef.Identifier.Text);
+        }
 
+        [Theory]
+        [InlineData(FieldTypes.FixedLength)]
+        [InlineData(FieldTypes.LongText)]
+        public void WriteClasses_PassInRDOObjectWithTextField_ReturnsInheritRDOWrapper(FieldTypes fieldType)
+        {
+            //ARRANGE
+            var text = Writer.WriteClassMetaData(new Application
+            {
+                Objects = new List<ObjectDef>
+                {
+                    new ObjectDef
+                    {
+                        Name ="hello",
+                        Fields = new List<Field>()
+                        {
+                            new Field
+                            {
+                                Name = "test",
+                                FieldType = fieldType,
+                                MaxLength = 30
+                            }
+                        }
+                    }
+                }
+            });
+            //ACT
+            var classDefinition = ParseTestHelper.GetClassDefinition(text);
+
+            //ASSERT
+            var fieldDef = classDefinition.Members.First().ToString().Trim();
+            Assert.Equal("public const int MAX_LENTH = 30;", fieldDef);
         }
 
         [Fact]

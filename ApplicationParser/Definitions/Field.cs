@@ -7,8 +7,10 @@ namespace ApplicationParser
         public IEnumerable<ArtifactDef> Choices { get; set; }
         public FieldTypes FieldType { get; set; }
         public bool IsSystem { get; set; }
+
+        public int MaxLength { get; set; }
         public Field() { }
-        public Field(string name, FieldTypes fieldType, bool systemField) 
+        public Field(string name, FieldTypes fieldType, bool systemField)
         {
             this.Name = name;
             this.FieldType = fieldType;

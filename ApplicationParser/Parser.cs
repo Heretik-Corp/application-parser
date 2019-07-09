@@ -83,13 +83,16 @@ namespace ApplicationParser
             var guid = field.SelectSingleNode("Guid");
             var name = field.SelectSingleNode("DisplayName");
             var fieldId = (FieldTypes)int.Parse(field.SelectSingleNode("FieldTypeId").InnerText);
+
+            int.TryParse(field.SelectSingleNode("MaxLength")?.InnerText, out var length);
+
             var artifact = new Field
             {
                 Guid = guid.InnerText,
                 Name = name.InnerText,
                 FieldType = fieldId,
-                IsSystem = system
-
+                IsSystem = system,
+                MaxLength = length
             };
             var choiceList = new List<ArtifactDef>();
             if (field.SelectNodes("Codes").Count > 0)

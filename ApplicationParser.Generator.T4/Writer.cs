@@ -60,6 +60,11 @@ namespace ApplicationParser
             return classWriter.WriteClasses(app);
         }
 
+        public static string WriteClassMetaData(this Application app)
+        {
+            return classWriter.WriteClassMetaData(app);
+        }
+
         public static string WriteScripts(this Application app)
         {
             return scriptWriter.WriteScripts(app);

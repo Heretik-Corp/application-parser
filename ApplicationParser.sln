@@ -14,6 +14,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CodeGen", "CodeGen", "{0FECA139-B14D-4B23-961A-9133FA0F4269}"
 	ProjectSection(SolutionItems) = preProject
 		gen\APArtifactExtensions.cs.pp = gen\APArtifactExtensions.cs.pp
+		gen\ObjectDefsFieldMetadata.tt.pp = gen\ObjectDefsFieldMetadata.tt.pp
 		gen\ObjectDefs.tt.pp = gen\ObjectDefs.tt.pp
 		gen\ObjectTypesDefs.tt.pp = gen\ObjectTypesDefs.tt.pp
 		gen\RDOWrapper.cs.pp = gen\RDOWrapper.cs.pp

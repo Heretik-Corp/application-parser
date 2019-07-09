@@ -8,13 +8,28 @@ namespace Heretik.ApplicationParser.Writers
 {
     public class ClassWriter
     {
-
+        public virtual string WriteClassMetaData(Application app)
+        {
+            var sb = new StringBuilder();
+            foreach (var obj in FilterClassNames(app.Objects))
+            {
+                foreach (var field in obj.Fields)
+                {
+                    WriteClassName(obj, sb, $"{field.Name}FieldMetaData", false);
+                    sb.AppendLine("\t{");
+                    sb.Append(this.GetPropertyMetaData(field));
+                    sb.AppendLine("\t}");
+                    sb.AppendLine();
+                }
+            }
+            return sb.ToString();
+        }
         public virtual string WriteClasses(Application app)
         {
             var sb = new StringBuilder();
             foreach (var obj in FilterClassNames(app.Objects))
             {
-                WriteClassName(obj, sb);
+                WriteClassName(obj, sb, string.Empty, true);
                 sb.AppendLine("\t{");
                 sb.Append(this.GetProperties(obj));
                 sb.AppendLine("\t}");
@@ -28,15 +43,15 @@ namespace Heretik.ApplicationParser.Writers
             return objects.Where(x => !x.Name.Equals("field", StringComparison.InvariantCultureIgnoreCase));
         }
 
-        protected virtual void WriteClassName(ObjectDef obj, StringBuilder sb)
+        protected virtual void WriteClassName(ObjectDef obj, StringBuilder sb, string suffix, bool includeInheritance)
         {
             if (obj.Name.Equals("Document"))
             {
-                sb.AppendLine($"\t{WriterUtils.GetClass(obj.Name)} : DocumentWrapper");
+                sb.AppendLine($"\t{WriterUtils.GetClass($"{obj.Name}{suffix}")} {(includeInheritance ? ": DocumentWrapper" : "")}");
             }
             else
             {
-                sb.AppendLine($"\t{WriterUtils.GetClass(obj.Name)} : RDOWrapper");
+                sb.AppendLine($"\t{WriterUtils.GetClass($"{obj.Name}{suffix}")} {(includeInheritance ? ": RDOWrapper" : "")}");
             }
         }
 
@@ -55,6 +70,17 @@ namespace Heretik.ApplicationParser.Writers
             }
             return sb.ToString();
         }
+
+        protected virtual string GetPropertyMetaData(Field field)
+        {
+            var sb = new StringBuilder();
+            if (field.FieldType == FieldTypes.FixedLength || field.FieldType == FieldTypes.LongText)
+            {
+                sb.AppendLine($"\t\tpublic const int MAX_LENTH = {field.MaxLength};");
+            }
+            return sb.ToString();
+        }
+
 
         protected virtual void WriteField(ObjectDef objDef, Field field, StringBuilder sb)
         {
