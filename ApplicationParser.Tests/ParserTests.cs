@@ -68,6 +68,7 @@ namespace ApplicationParser.Tests
             xmlDoc.LoadXml(xmlTemplate);
             var objects = parser.ParseObjects(xmlDoc).ToList();
 
+
             //ASSERT
             Assert.Single(objects);
             Assert.Equal("15c36703-74ea-4ff8-9dfb-ad30ece7530d", objects[0].Guid);
