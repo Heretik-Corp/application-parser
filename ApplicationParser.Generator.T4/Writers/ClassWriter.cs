@@ -15,11 +15,16 @@ namespace Heretik.ApplicationParser.Writers
             {
                 foreach (var field in obj.Fields)
                 {
-                    WriteClassName(obj, sb, $"{field.Name}FieldMetaData", false);
-                    sb.AppendLine("\t{");
-                    sb.Append(this.GetPropertyMetaData(field));
-                    sb.AppendLine("\t}");
-                    sb.AppendLine();
+                    var metaData = this.GetPropertyMetaData(field);
+                    if (!string.IsNullOrWhiteSpace(metaData))
+                    {
+                        WriteClassName(obj, sb, $"{field.Name}FieldMetaData", false);
+                        sb.AppendLine("\t{");
+                        sb.Append(metaData);
+                        sb.AppendLine("\t}");
+                        sb.AppendLine();
+                    }
+
                 }
             }
             return sb.ToString();
@@ -74,7 +79,7 @@ namespace Heretik.ApplicationParser.Writers
         protected virtual string GetPropertyMetaData(Field field)
         {
             var sb = new StringBuilder();
-            if (field.FieldType == FieldTypes.FixedLength || field.FieldType == FieldTypes.LongText)
+            if (field.FieldType == FieldTypes.FixedLength)
             {
                 sb.AppendLine($"\t\tpublic const int MAX_LENTH = {field.MaxLength};");
             }

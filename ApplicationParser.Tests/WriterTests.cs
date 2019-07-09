@@ -51,10 +51,8 @@ namespace ApplicationParser.Tests
             Assert.Equal("RDOWrapper", classDef.Identifier.Text);
         }
 
-        [Theory]
-        [InlineData(FieldTypes.FixedLength)]
-        [InlineData(FieldTypes.LongText)]
-        public void WriteClasses_PassInRDOObjectWithTextField_ReturnsInheritRDOWrapper(FieldTypes fieldType)
+        [Fact]
+        public void WriteClasses_PassInRDOObjectWithTextField_ReturnsInheritRDOWrapper()
         {
             //ARRANGE
             var text = Writer.WriteClassMetaData(new Application
@@ -69,7 +67,7 @@ namespace ApplicationParser.Tests
                             new Field
                             {
                                 Name = "test",
-                                FieldType = fieldType,
+                                FieldType = FieldTypes.FixedLength,
                                 MaxLength = 30
                             }
                         }
@@ -82,6 +80,35 @@ namespace ApplicationParser.Tests
             //ASSERT
             var fieldDef = classDefinition.Members.First().ToString().Trim();
             Assert.Equal("public const int MAX_LENTH = 30;", fieldDef);
+        }
+
+        [Fact]
+        public void WriteClasses_PassInRDOObjectWithNoTextField_ReturnsInheritRDOWrapper()
+        {
+            //ARRANGE
+            var text = Writer.WriteClassMetaData(new Application
+            {
+                Objects = new List<ObjectDef>
+                {
+                    new ObjectDef
+                    {
+                        Name ="hello",
+                        Fields = new List<Field>()
+                        {
+                            new Field
+                            {
+                                Name = "test",
+                                FieldType = FieldTypes.Date,
+                                MaxLength = 30
+                            }
+                        }
+                    }
+                }
+            });
+            //ACT
+
+            //ASSERT
+            Assert.True(string.IsNullOrWhiteSpace(text));
         }
 
         [Fact]
