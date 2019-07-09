@@ -1,6 +1,6 @@
-﻿using System.Linq;
+﻿using Microsoft.CodeAnalysis;
+using System.Linq;
 using System.Xml;
-using Microsoft.CodeAnalysis;
 using Xunit;
 
 namespace ApplicationParser.Tests
@@ -69,7 +69,7 @@ namespace ApplicationParser.Tests
             var objects = parser.ParseObjects(xmlDoc).ToList();
 
             //ASSERT
-            Assert.Equal(1, objects.Count());
+            Assert.Single(objects);
             Assert.Equal("15c36703-74ea-4ff8-9dfb-ad30ece7530d", objects[0].Guid);
             Assert.Equal("A custom Object", objects[0].RawName);
         }
