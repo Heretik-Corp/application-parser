@@ -23,4 +23,5 @@ namespace $rootnamespace$
 <#= app.WriteChoiceGuids() #>
 <#= app.WriteTabGuids() #>
 <#= app.WriteScripts() #>
+<#= app.WriteObjectRules() #>
 }

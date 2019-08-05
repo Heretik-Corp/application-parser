@@ -5,5 +5,6 @@ namespace ApplicationParser
     public class ObjectDef : ArtifactDef
     {
         public IEnumerable<Field> Fields { get; set; }
+        public IEnumerable<ObjectRule> ObjectRules { get; set; } = new List<ObjectRule>();
     }
 }

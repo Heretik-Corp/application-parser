@@ -6,6 +6,7 @@ namespace ApplicationParser.Tests
 {
     public class WriterTests
     {
+        #region WriteClasses
         [Fact]
         public void WriteClasses_PassInRDOObject_ReturnsCorrectClassName()
         {
@@ -156,5 +157,9 @@ namespace ApplicationParser.Tests
             //ASSERT
             Assert.Empty(text);
         }
+
+        #endregion
+
+
     }
 }

@@ -75,7 +75,30 @@ namespace ApplicationParser
                 }
             }
             obj.Fields = fieldList;
+            obj.ObjectRules = ParseObjectRules(node)?.ToList() ?? new List<ObjectRule>();
             return obj;
+        }
+
+        private IEnumerable<ObjectRule> ParseObjectRules(XmlNode node)
+        {
+            var rules = new List<ObjectRule>();
+            var rNodes = node.SelectSingleNode("ObjectRules");
+            if (rNodes != null)
+            {
+                var oRules = node.SelectSingleNode("ObjectRules").SelectNodes("ObjectRule");
+                foreach (XmlNode oRule in oRules)
+                {
+                    var guid = oRule.SelectSingleNode("Guid");
+                    var name = oRule.SelectSingleNode("Name");
+                    rules.Add(new ObjectRule
+                    {
+                        Name = name.InnerText,
+                        Guid = guid.InnerText
+                    });
+
+                }
+            }
+            return rules;
         }
 
         private Field ParseField(XmlNode field, bool system = false)

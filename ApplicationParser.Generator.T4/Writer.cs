@@ -1,4 +1,5 @@
-﻿using Heretik.ApplicationParser.Writers;
+﻿using ApplicationParser.Writers;
+using Heretik.ApplicationParser.Writers;
 using System.Text;
 
 namespace ApplicationParser
@@ -10,6 +11,7 @@ namespace ApplicationParser
         private static TabWriter tabWriter = new TabWriter();
         private static ApplicationWriter applicationWriter = new ApplicationWriter();
         private static ChoiceWriter choiceWriter = new ChoiceWriter();
+        private static ObjectRuleWriter objRuleWriter = new ObjectRuleWriter();
 
         public static string WriteObjectTypeGuids(this Application app)
         {
@@ -68,6 +70,10 @@ namespace ApplicationParser
         public static string WriteScripts(this Application app)
         {
             return scriptWriter.WriteScripts(app);
+        }
+        public static string WriteObjectRules(this Application app)
+        {
+            return objRuleWriter.WriteObjectRules(classWriter.FilterClassNames(app.Objects));
         }
 
     }

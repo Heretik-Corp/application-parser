@@ -161,6 +161,7 @@
     <Compile Include="Writers\ApplicationWriterTests.cs" />
     <Compile Include="Writers\ChoiceWriterTests.cs" />
     <Compile Include="Writers\ClassWriterTests.cs" />
+    <Compile Include="Writers\ObjectRuleWriterTests.cs" />
     <Compile Include="Writers\ScriptWriterTests.cs" />
     <Compile Include="Writers\TabWriterTests.cs" />
     <Compile Include="WriterTests.cs" />

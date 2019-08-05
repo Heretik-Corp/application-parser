@@ -76,6 +76,52 @@ namespace ApplicationParser.Tests
         }
 
         [Fact]
+        public void ParseObjects_ParsesObjectRule()
+        {
+            //ARRANGE
+            var xmlTemplate = @"<?xml version=""1.0"" encoding=""UTF - 8""?>
+<Application xmlns:xsd=""http://www.w3.org/2001/XMLSchema"" xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"">
+  <Objects>
+    <Object>
+      <ArtifactId>1035231</ArtifactId>
+      <DescriptorArtifactTypeId>10</DescriptorArtifactTypeId>
+      <Guid>15c36703-74ea-4ff8-9dfb-ad30ece7530d</Guid>
+      <Name>A custom Object</Name>
+        <Fields />
+        <SystemFields />
+      <ObjectRules>
+        <ObjectRule>
+          <Name>Show Segmentation Layout</Name>
+          <Action>&lt;action&gt;&lt;selectedLayoutID&gt;1071483&lt;/selectedLayoutID&gt;&lt;allowChange&gt;N&lt;/allowChange&gt;&lt;/action&gt;</Action>
+          <ArtifactTypeID>1000054</ArtifactTypeID>
+          <FieldArtifactID>1071337</FieldArtifactID>
+          <Guid>80b68dcc-8d7c-465c-a142-154cc0472445</Guid>
+          <ObjectRuleID>1071486</ObjectRuleID>
+          <Operator />
+          <Type>DefaultLayout</Type>
+          <Value>&lt;value&gt;&lt;selectedCodeID&gt;1071339&lt;/selectedCodeID&gt;&lt;/value&gt;</Value>
+          <ApplicationVersion>1.4.149.59</ApplicationVersion>
+        </ObjectRule>
+</ObjectRules>
+    </Object>
+</Objects>
+</Application>
+";
+            //ACT
+            var parser = new Parser();
+            var xmlDoc = new XmlDocument();
+            xmlDoc.LoadXml(xmlTemplate);
+            var objects = parser.ParseObjects(xmlDoc).ToList();
+
+
+            //ASSERT
+            Assert.Single(objects);
+            Assert.Equal("80b68dcc-8d7c-465c-a142-154cc0472445", objects.Single().ObjectRules.Single().Guid);
+            Assert.Equal("ShowSegmentationLayout", objects.Single().ObjectRules.Single().Name);
+        }
+
+
+        [Fact]
         public void ParseFields_NonSystemFieldsPassIn_ReturnsFalseForFieldDef()
         {
             //ARRANGE
