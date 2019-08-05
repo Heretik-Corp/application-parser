@@ -1,9 +1,9 @@
-﻿using Heretik.ApplicationParser.Writers;
+﻿using ApplicationParser;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace ApplicationParser.Writers
+namespace Heretik.ApplicationParser.Writers
 {
     public class ObjectRuleWriter
     {

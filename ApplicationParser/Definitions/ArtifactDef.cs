@@ -27,7 +27,9 @@ namespace ApplicationParser
                 .Replace("#", "_")
                 .Replace(")", string.Empty)
                 .Replace("(", string.Empty)
+                .Replace(".", string.Empty)
                 .Replace(",", string.Empty)
+                .Replace("'", string.Empty)
                 .Replace("/", string.Empty);
         }
     }

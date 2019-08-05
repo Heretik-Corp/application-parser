@@ -1,5 +1,4 @@
-﻿using ApplicationParser.Writers;
-using Heretik.ApplicationParser.Writers;
+﻿using Heretik.ApplicationParser.Writers;
 using System.Text;
 
 namespace ApplicationParser
