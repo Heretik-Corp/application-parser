@@ -1,4 +1,4 @@
-﻿using ApplicationParser.Writers;
+﻿using Heretik.ApplicationParser.Writers;
 using System;
 using System.Collections.Generic;
 using Xunit;

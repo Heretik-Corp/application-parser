@@ -76,6 +76,7 @@ namespace ApplicationParser
             }
             obj.Fields = fieldList;
             obj.ObjectRules = ParseObjectRules(node)?.ToList() ?? new List<ObjectRule>();
+            obj.Layouts = ParseLayouts(node)?.ToList() ?? new List<Layout>();
             return obj;
         }
 
@@ -85,7 +86,7 @@ namespace ApplicationParser
             var rNodes = node.SelectSingleNode("ObjectRules");
             if (rNodes != null)
             {
-                var oRules = node.SelectSingleNode("ObjectRules").SelectNodes("ObjectRule");
+                var oRules = rNodes.SelectNodes("ObjectRule");
                 foreach (XmlNode oRule in oRules)
                 {
                     var guid = oRule.SelectSingleNode("Guid");
@@ -100,6 +101,30 @@ namespace ApplicationParser
             }
             return rules;
         }
+
+
+        private IEnumerable<Layout> ParseLayouts(XmlNode node)
+        {
+            var layouts = new List<Layout>();
+            var rNodes = node.SelectSingleNode("Layouts");
+            if (rNodes != null)
+            {
+                var oRules = rNodes.SelectNodes("Layout");
+                foreach (XmlNode oRule in oRules)
+                {
+                    var guid = oRule.SelectSingleNode("Guid");
+                    var name = oRule.SelectSingleNode("Name");
+                    layouts.Add(new Layout
+                    {
+                        Name = name.InnerText,
+                        Guid = guid.InnerText
+                    });
+
+                }
+            }
+            return layouts;
+        }
+
 
         private Field ParseField(XmlNode field, bool system = false)
         {

@@ -1,22 +1,26 @@
 ﻿using ApplicationParser;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Heretik.ApplicationParser.Writers
 {
-    public class ApplicationWriter
+    public class LayoutWriter
     {
-        public string WriteApplicationDefinition(Application app)
+        public string WriteLayoutDefinitions(IEnumerable<ObjectDef> objs)
         {
             var sb = new StringBuilder();
-            sb.AppendLine("\tpublic static class Application");
-            sb.AppendLine("\t{");
-            sb.AppendLine($"\t\tpublic const string Name = \"{app.Name}\";");
-            sb.AppendLine($"\t\tpublic const string Guid = \"{app.Guid}\";");
-            sb.AppendLine("\t}");
+            foreach (var obj in objs.Where(x => (x.Layouts?.ToList() ?? new List<Layout>()).Any()))
+            {
+                sb.AppendLine($"\t{WriterUtils.GetClass(obj.Name)}Layouts");
+                sb.AppendLine("\t{");
+                foreach (var rule in obj.Layouts)
+                {
+                    sb.AppendLine($"\t\t{WriterUtils.GetString(rule)}");
+                }
+                sb.AppendLine("\t}");
+
+            }
             return sb.ToString();
         }
     }

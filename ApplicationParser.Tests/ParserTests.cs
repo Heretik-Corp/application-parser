@@ -120,6 +120,44 @@ namespace ApplicationParser.Tests
             Assert.Equal("ShowSegmentationLayout", objects.Single().ObjectRules.Single().Name);
         }
 
+        [Fact]
+        public void ParseObjects_ParsesLayouts()
+        {
+            //ARRANGE
+            var xmlTemplate = @"<?xml version=""1.0"" encoding=""UTF - 8""?>
+<Application xmlns:xsd=""http://www.w3.org/2001/XMLSchema"" xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"">
+  <Objects>
+    <Object>
+      <ArtifactId>1035231</ArtifactId>
+      <DescriptorArtifactTypeId>10</DescriptorArtifactTypeId>
+      <Guid>15c36703-74ea-4ff8-9dfb-ad30ece7530d</Guid>
+      <Name>A custom Object</Name>
+        <Fields />
+        <SystemFields />
+      <ObjectRules />
+<Layouts>
+    <Layout>
+ <Name>Layout Name</Name>
+<Guid>80b68dcc-8d7c-465c-a142-154cc0472445</Guid>
+</Layout>
+</Layouts>
+    </Object>
+</Objects>
+</Application>
+";
+            //ACT
+            var parser = new Parser();
+            var xmlDoc = new XmlDocument();
+            xmlDoc.LoadXml(xmlTemplate);
+            var objects = parser.ParseObjects(xmlDoc).ToList();
+
+
+            //ASSERT
+            Assert.Single(objects);
+            Assert.Equal("80b68dcc-8d7c-465c-a142-154cc0472445", objects.Single().Layouts.Single().Guid);
+            Assert.Equal("Layout Name", objects.Single().ObjectRules.Single().Name);
+        }
+
 
         [Fact]
         public void ParseFields_NonSystemFieldsPassIn_ReturnsFalseForFieldDef()
