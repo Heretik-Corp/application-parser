@@ -11,6 +11,7 @@ namespace ApplicationParser
         private static ApplicationWriter applicationWriter = new ApplicationWriter();
         private static ChoiceWriter choiceWriter = new ChoiceWriter();
         private static ObjectRuleWriter objRuleWriter = new ObjectRuleWriter();
+        private static LayoutWriter layoutWriter = new LayoutWriter();
 
         public static string WriteObjectTypeGuids(this Application app)
         {
@@ -73,6 +74,11 @@ namespace ApplicationParser
         public static string WriteObjectRules(this Application app)
         {
             return objRuleWriter.WriteObjectRules(classWriter.FilterClassNames(app.Objects));
+        }
+
+        public static string WriteLayouts(this Application app)
+        {
+            return layoutWriter.WriteLayoutDefinitions(classWriter.FilterClassNames(app.Objects));
         }
 
     }

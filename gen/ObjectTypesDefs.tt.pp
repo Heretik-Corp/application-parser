@@ -24,4 +24,5 @@ namespace $rootnamespace$
 <#= app.WriteTabGuids() #>
 <#= app.WriteScripts() #>
 <#= app.WriteObjectRules() #>
+<#= app.WriteLayouts() #>
 }

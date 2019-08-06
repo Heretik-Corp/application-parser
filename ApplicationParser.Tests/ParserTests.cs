@@ -155,7 +155,7 @@ namespace ApplicationParser.Tests
             //ASSERT
             Assert.Single(objects);
             Assert.Equal("80b68dcc-8d7c-465c-a142-154cc0472445", objects.Single().Layouts.Single().Guid);
-            Assert.Equal("Layout Name", objects.Single().ObjectRules.Single().Name);
+            Assert.Equal("LayoutName", objects.Single().Layouts.Single().Name);
         }
 
 
