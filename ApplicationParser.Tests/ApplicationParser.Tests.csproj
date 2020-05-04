@@ -154,6 +154,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ArtifactDefTests.cs" />
+    <Compile Include="Definitions\ArtifactDefTests.cs" />
     <Compile Include="ParseTestHelper.cs" />
     <Compile Include="ParserTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

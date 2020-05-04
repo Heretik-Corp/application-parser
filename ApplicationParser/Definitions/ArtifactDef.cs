@@ -19,6 +19,7 @@ namespace ApplicationParser
         {
             text = Regex.Replace(text, "^#", "h_");
             text = Regex.Replace(text, "#$", "_h");
+            text = Regex.Replace(text, "^\\d+", string.Empty);
             return text.Replace("%", "Percent")
                 .Replace("::", "_")
                 .Replace("-", "_")
