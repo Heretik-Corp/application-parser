@@ -1,6 +1,7 @@
 using kCura.Relativity.Client.DTOs;
 using ApplicationParser;
 using System;
+using Relativity.Services.Objects.DataContracts;
 
 namespace $rootnamespace$
 {
