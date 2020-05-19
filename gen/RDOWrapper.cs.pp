@@ -64,6 +64,7 @@ namespace $rootnamespace$
         public IReadOnlyList<FieldValuePair> UpdatedFields { get { return this.FieldValues?.Where(x => x.Updated)?.ToList() ?? new List<FieldValuePairTracker>(); } }
         public RelativityObjectWrapper() { }
         public int ArtifactId { get; set; }
+        public Guid ObjectTypeGuid { get;set; }
         public RelativityObjectWrapper(Relativity.Services.Objects.DataContracts.RelativityObject artifact)
         {
             if (artifact != null)
