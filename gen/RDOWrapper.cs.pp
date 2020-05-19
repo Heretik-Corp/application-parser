@@ -18,6 +18,15 @@ namespace $rootnamespace$
 		public int ArtifactId { get { return Artifact.ArtifactID; } }
     }
 
+    public class FieldValuePairTracker : FieldValuePair
+    {
+        public FieldValuePairTracker(bool updated)
+        {
+            this.Updated = updated;
+        }
+        public bool Updated { get; set; }
+    }
+
     public class RelativityObjectWrapper
     {
         public FieldValuePairTracker this[Guid g]
