@@ -14,9 +14,7 @@ build:
   verbosity: minimal
 after_build:
 - ps: >-
-    if($env:appveyor_repo_branch -eq 'master') {
-         nuget/build.ps1 -Version $env:appveyor_build_version
-    }
+    nuget/build.ps1 -Version $env:appveyor_build_version
 artifacts:
 - path: nuget\*.nupkg
 deploy:
