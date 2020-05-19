@@ -71,15 +71,15 @@ namespace ApplicationParser.Writers
             switch (field.FieldType)
             {
                 case FieldTypes.SingleObject:
-                    throw new NotImplementedException();
+                    return "Relativity.Services.Objects.DataContracts.RelativityObjectValue";
                 case FieldTypes.MultiChoice:
-                    throw new NotImplementedException();
+                    return "List<Relativity.Services.Objects.DataContracts.Choice>";
                 case FieldTypes.SingleChoice:
                     return "Relativity.Services.Objects.DataContracts.Choice";
                 case FieldTypes.MultiObject:
-                    throw new NotImplementedException();
+                    return "List<Relativity.Services.Objects.DataContracts.RelativityObjectValue>";
                 case FieldTypes.User:
-                    throw new NotImplementedException();
+                    return "Relativity.Services.Objects.DataContracts.User";
                 default:
                     return b;
 

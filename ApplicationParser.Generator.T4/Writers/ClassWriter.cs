@@ -101,22 +101,14 @@ namespace Heretik.ApplicationParser.Writers
             //We also need to support ParentArtifact of type Artifact isSystem:true
             sb.Append($"\t\tpublic {fieldType} {field.Name}");
             sb.Append(" {");
-            if (field.IsSystem && field.Name.StartsWith("System")) //this might cause a problem but for now I'm lazy
+            if (field.IsSystem && field.Name.StartsWith("System") && !objDef.ShouldUseOMModel) //this might cause a problem but for now I'm lazy
             {
                 sb.Append($" get {{ return base.Artifact.{field.Name}; }}");
             }
-            else if (field.IsSystem && field.Name.Equals("Name"))
+            else if (field.IsSystem && field.Name.Equals("Name") && !objDef.ShouldUseOMModel)
             {
-                if (objDef.ShouldUseOMModel)
-                {
-                    sb.Append($" get {{ return base.Artifact.Name; }}");
-                    sb.Append($" set {{ base.Artifact.Name = value; }}");
-                }
-                else
-                {
-                    sb.Append($" get {{ return base.Artifact.TextIdentifier; }}");
-                    sb.Append($" set {{ base.Artifact.TextIdentifier = value; }}");
-                }
+                sb.Append($" get {{ return base.Artifact.TextIdentifier; }}");
+                sb.Append($" set {{ base.Artifact.TextIdentifier = value; }}");
             }
             else
             {

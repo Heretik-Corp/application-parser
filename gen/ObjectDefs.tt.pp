@@ -9,6 +9,7 @@
 <# 
 	string solutionsPath = Host.ResolveAssemblyReference("$(SolutionDir)");
 	string filePath = solutionsPath + "application/application.xml"; 
+	string omOverrides = solutionsPath + "application/useOmNotation.json"; 
 #>
 <# string fileContent = System.IO.File.ReadAllText(filePath); #>
 <# var app = new ApplicationParser.Parser().Parse(fileContent); #>

@@ -2,6 +2,8 @@ using kCura.Relativity.Client.DTOs;
 using ApplicationParser;
 using System;
 using System.Linq;
+using Relativity.Services.Objects.DataContracts;
+using System.Collections.Generic;
 
 namespace $rootnamespace$
 {
@@ -61,7 +63,7 @@ namespace $rootnamespace$
             {
                 obj.FieldValues.Add(new FieldValuePair
                 {
-                    Field = new Field
+                    Field = new Relativity.Services.Objects.DataContracts.Field
                     {
                         Guids = new List<Guid> { fieldGuid },
                     },
