@@ -36,5 +36,42 @@ namespace $rootnamespace$
             value = GetValue<T>(artifact, fieldGuid);
             return true;
         }
+
+        public static T GetValue<T>(this Relativity.Services.Objects.DataContracts.RelativityObject obj, Guid fieldGuid)
+        {
+            if (obj.FieldValues == null)
+            {
+                obj.FieldValues = new List<FieldValuePair>();
+            }
+            if (!obj.FieldValues.Any(x => x.Field.Guids.Contains(fieldGuid)))
+            {
+                throw new Exception($"Field with guid {fieldGuid} is not loaded on this object.");
+            }
+            var value = obj[fieldGuid].Value;
+            return (T)value;
+        }
+
+        public static void SetValue<T>(this Relativity.Services.Objects.DataContracts.RelativityObject obj, Guid fieldGuid, T value)
+        {
+            if (obj.FieldValues == null)
+            {
+                obj.FieldValues = new List<FieldValuePair>();
+            }
+            if (!obj.FieldValues.Any(x=>x.Field.Guids.Contains(fieldGuid)))
+            {
+                obj.FieldValues.Add(new FieldValuePair
+                {
+                    Field = new Field
+                    {
+                        Guids = new List<Guid> { fieldGuid },
+                    },
+                    Value = value
+                });
+            }
+            else
+            {
+                obj[fieldGuid].Value = value;
+            }
+        }
     }
 }

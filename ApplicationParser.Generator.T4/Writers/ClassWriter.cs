@@ -1,4 +1,5 @@
 ﻿using ApplicationParser;
+using ApplicationParser.Writers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -56,7 +57,14 @@ namespace Heretik.ApplicationParser.Writers
             }
             else
             {
-                sb.AppendLine($"\t{WriterUtils.GetClass($"{obj.Name}{suffix}")} {(includeInheritance ? ": RDOWrapper" : "")}");
+                if (obj.ShouldUseOMModel)
+                {
+                    sb.AppendLine($"\t{WriterUtils.GetClass($"{obj.Name}{suffix}")} {(includeInheritance ? ": OMObjectWrapper" : "")}");
+                }
+                else
+                {
+                    sb.AppendLine($"\t{WriterUtils.GetClass($"{obj.Name}{suffix}")} {(includeInheritance ? ": RDOWrapper" : "")}");
+                }
             }
         }
 
@@ -89,7 +97,7 @@ namespace Heretik.ApplicationParser.Writers
 
         protected virtual void WriteField(ObjectDef objDef, Field field, StringBuilder sb)
         {
-            var fieldType = GetFieldType(field);
+            var fieldType = RDOFieldTypeGeneratorFactory.GetFielGenerator(objDef).GetFieldType(field);
             //We also need to support ParentArtifact of type Artifact isSystem:true
             sb.Append($"\t\tpublic {fieldType} {field.Name}");
             sb.Append(" {");
@@ -99,8 +107,16 @@ namespace Heretik.ApplicationParser.Writers
             }
             else if (field.IsSystem && field.Name.Equals("Name"))
             {
-                sb.Append($" get {{ return base.Artifact.TextIdentifier; }}");
-                sb.Append($" set {{ base.Artifact.TextIdentifier = value; }}");
+                if (objDef.ShouldUseOMModel)
+                {
+                    sb.Append($" get {{ return base.Artifact.Name; }}");
+                    sb.Append($" set {{ base.Artifact.Name = value; }}");
+                }
+                else
+                {
+                    sb.Append($" get {{ return base.Artifact.TextIdentifier; }}");
+                    sb.Append($" set {{ base.Artifact.TextIdentifier = value; }}");
+                }
             }
             else
             {
@@ -109,46 +125,6 @@ namespace Heretik.ApplicationParser.Writers
                 sb.Append($" set {{ base.Artifact.SetValue({parseString}, value); }}");
             }
             sb.AppendLine("\t\t}");
-        }
-
-        protected string GetFieldType(Field field)
-        {
-            //This is actually a relativity bug
-            if (field.IsSystem && (field.Name.Equals("SystemLastModifiedBy", StringComparison.CurrentCultureIgnoreCase) ||
-                                   field.Name.Equals("SystemCreatedBy", StringComparison.CurrentCultureIgnoreCase)))
-            {
-                field.FieldType = FieldTypes.User;
-            }
-
-            switch (field.FieldType)
-            {
-                case FieldTypes.FixedLength:
-                case FieldTypes.LongText:
-                    return "string";
-                case FieldTypes.Decimal:
-                case FieldTypes.Currency:
-                    return "decimal?";
-                case FieldTypes.WholeNumber:
-                    return "int?";
-                case FieldTypes.SingleChoice:
-                    return "Choice";
-                case FieldTypes.SingleObject:
-                    return "Artifact";
-                case FieldTypes.User:
-                    return "User";
-                case FieldTypes.YesNo:
-                    return "bool?";
-                case FieldTypes.Date:
-                    return "DateTime?";
-                case FieldTypes.MultiObject:
-                    return "FieldValueList<Artifact>";
-                case FieldTypes.MultiChoice:
-                    return "MultiChoiceFieldValueList";
-                case FieldTypes.File:
-                    return "string";
-                default:
-                    return "object";
-            }
         }
     }
 }

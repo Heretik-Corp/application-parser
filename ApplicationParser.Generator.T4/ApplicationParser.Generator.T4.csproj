@@ -104,6 +104,7 @@
     <Compile Include="Writers\ChoiceWriter.cs" />
     <Compile Include="Writers\ClassWriter.cs" />
     <Compile Include="Writers\ObjectRuleWriter.cs" />
+    <Compile Include="Writers\RDOFieldTypeGenerator.cs" />
     <Compile Include="Writers\ScriptWriter.cs" />
     <Compile Include="Writers\TabWriter.cs" />
     <Compile Include="Writers\WriterUtils.cs" />
