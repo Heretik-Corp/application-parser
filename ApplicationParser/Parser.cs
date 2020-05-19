@@ -9,7 +9,7 @@ namespace ApplicationParser
 {
     public class Parser
     {
-        public Application Parse(string xml, string overidePath)
+        public Application Parse(string xml, string overidePath = null)
         {
             var overrides = new HashSet<Guid>();
             if (File.Exists(overidePath))

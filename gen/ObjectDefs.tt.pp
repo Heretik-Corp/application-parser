@@ -9,13 +9,14 @@
 <# 
 	string solutionsPath = Host.ResolveAssemblyReference("$(SolutionDir)");
 	string filePath = solutionsPath + "application/application.xml"; 
-	string omOverrides = solutionsPath + "application/useOmNotation.json"; 
+	string omOverrides = solutionsPath + "application/useOmNotation.xml"; 
 #>
 <# string fileContent = System.IO.File.ReadAllText(filePath); #>
-<# var app = new ApplicationParser.Parser().Parse(fileContent); #>
+<# var app = new ApplicationParser.Parser().Parse(fileContent, omOverrides); #>
 <#@ output extension=".cs" #>
 using System;
 using kCura.Relativity.Client.DTOs;
+using System.Collections.Generic;
 using $rootnamespace$;
 
 namespace $rootnamespace$

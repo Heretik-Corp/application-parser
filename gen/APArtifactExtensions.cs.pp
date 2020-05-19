@@ -39,13 +39,13 @@ namespace $rootnamespace$
             return true;
         }
 
-        public static T GetValue<T>(this Relativity.Services.Objects.DataContracts.RelativityObject obj, Guid fieldGuid)
+        public static T GetValue<T>(this RelativityObjectWrapper obj, Guid fieldGuid)
         {
             if (obj.FieldValues == null)
             {
-                obj.FieldValues = new List<FieldValuePair>();
+                obj.FieldValues = new List<FieldValuePairTracker>();
             }
-            if (!obj.FieldValues.Any(x => x.Field.Guids.Contains(fieldGuid)))
+            if (!obj.FieldValueExists(fieldGuid))
             {
                 throw new Exception($"Field with guid {fieldGuid} is not loaded on this object.");
             }
@@ -53,26 +53,27 @@ namespace $rootnamespace$
             return (T)value;
         }
 
-        public static void SetValue<T>(this Relativity.Services.Objects.DataContracts.RelativityObject obj, Guid fieldGuid, T value)
+        public static void SetValue<T>(this RelativityObjectWrapper obj, Guid fieldGuid, T value)
         {
             if (obj.FieldValues == null)
             {
-                obj.FieldValues = new List<FieldValuePair>();
+                obj.FieldValues = new List<FieldValuePairTracker>();
             }
-            if (!obj.FieldValues.Any(x=>x.Field.Guids.Contains(fieldGuid)))
+            if (!obj.FieldValueExists(fieldGuid))
             {
-                obj.FieldValues.Add(new FieldValuePair
+                obj.FieldValues.Add(new FieldValuePairTracker(true)
                 {
                     Field = new Relativity.Services.Objects.DataContracts.Field
                     {
                         Guids = new List<Guid> { fieldGuid },
                     },
-                    Value = value
+                    Value = value,
                 });
             }
             else
             {
                 obj[fieldGuid].Value = value;
+                obj[fieldGuid].Updated= true;
             }
         }
     }

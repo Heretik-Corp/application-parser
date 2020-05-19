@@ -18,11 +18,62 @@ namespace $rootnamespace$
 		public int ArtifactId { get { return Artifact.ArtifactID; } }
     }
 
+    public class RelativityObjectWrapper
+    {
+        public FieldValuePairTracker this[Guid g]
+        {
+            get
+            {
+                var field = this.FieldValues.FirstOrDefault(x => x.Field.Guids.Contains(g)) ?? throw new ApplicationException($"Field with Guid {g} cannot be found on the artifact collection");
+                return field;
+            }
+        }
+        public FieldValuePairTracker this[string name]
+        {
+            get
+            {
+                var field = this.FieldValues.FirstOrDefault(x => x.Field.Name == name) ?? throw new ApplicationException($"Field with Name {name} cannot be found on the artifact collection");
+                return field;
+            }
+        }
+
+        public FieldValuePairTracker this[int fieldId]
+        {
+            get
+            {
+                var field = this.FieldValues.FirstOrDefault(x => x.Field.ArtifactID == fieldId) ?? throw new ApplicationException($"Field with Id {fieldId} cannot be found on the artifact collection");
+                return field;
+            }
+        }
+
+        public bool FieldValueExists(Guid g)
+        {
+            return this.FieldValues.Any(x => x.Field.Guids.Contains(g));
+        }
+
+        public List<FieldValuePairTracker> FieldValues { get; set; } = new List<FieldValuePairTracker>();
+        public IReadOnlyList<FieldValuePair> UpdatedFields { get { return this.FieldValues?.Where(x => x.Updated)?.ToList() ?? new List<FieldValuePairTracker>(); } }
+        public RelativityObjectWrapper() { }
+        public int ArtifactId { get; set; }
+        public RelativityObjectWrapper(Relativity.Services.Objects.DataContracts.RelativityObject artifact)
+        {
+            if (artifact != null)
+            {
+                this.FieldValues = artifact.FieldValues.Select(x => new FieldValuePairTracker(false)
+                {
+                    Field = x.Field,
+                    Value = x.Value,
+                }).ToList();
+                this.ArtifactId = artifact.ArtifactID;
+            }
+        }
+    }
+
     public class OMObjectWrapper
     {
-        private Relativity.Services.Objects.DataContracts.RelativityObject _rdo;
-        public Relativity.Services.Objects.DataContracts.RelativityObject Artifact { get { return _rdo ?? (_rdo = new Relativity.Services.Objects.DataContracts.RelativityObject()); } set { _rdo = value; } }
-		public int ArtifactId { get { return this.Artifact.ArtifactID; } }
+        private RelativityObjectWrapper _rdo;
+        public RelativityObjectWrapper Artifact { get { return _rdo ?? (_rdo = new RelativityObjectWrapper()); } set { _rdo = value; } }
+        public int ArtifactId { get { return this.Artifact.ArtifactId; } }
     }
 
 }
