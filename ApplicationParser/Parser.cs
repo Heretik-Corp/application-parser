@@ -1,20 +1,28 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Security.Policy;
 using System.Xml;
 
 namespace ApplicationParser
 {
     public class Parser
     {
-        public Application Parse(string xml)
+        public Application Parse(string xml, string overidePath = null)
         {
+            var overrides = new HashSet<Guid>();
+            if (File.Exists(overidePath))
+            {
+                overrides = GetOverrides(overidePath);
+            }
             var xmlDoc = new XmlDocument(); // Create an XML document object
             xmlDoc.LoadXml(xml);
             var app = new Application();
             app.Guid = xmlDoc.SelectSingleNode("Application").SelectSingleNode("Guid").InnerText;
             app.Name = xmlDoc.SelectSingleNode("Application").SelectSingleNode("Name").InnerText;
 
-            app.Objects = ParseObjects(xmlDoc);
+            app.Objects = ParseObjects(xmlDoc, overrides);
 
             var tabList = new List<Tab>();
             var tabs = xmlDoc.GetElementsByTagName("Tab");
@@ -28,12 +36,40 @@ namespace ApplicationParser
             return app;
         }
 
-        public IEnumerable<ObjectDef> ParseObjects(XmlDocument xmlDoc)
+
+        private HashSet<Guid> GetOverrides(string path)
+        {
+            var content = File.ReadAllText(path);
+            var xml = new XmlDocument();
+            xml.LoadXml(content);
+            var objs = xml.GetElementsByTagName("object");
+            var hashSet = new HashSet<Guid>();
+            foreach (XmlNode obj in objs)
+            {
+                var guid = obj.Attributes["guid"].Value;
+                if (!Guid.TryParse(guid, out var g))
+                {
+                    continue;
+                }
+                var over = obj.Attributes["override"].Value;
+                if (!bool.TryParse(over, out var shouldOverride))
+                {
+                    shouldOverride = false;
+                }
+                if (shouldOverride)
+                {
+                    hashSet.Add(g);
+                }
+            }
+            return hashSet;
+        }
+
+        public IEnumerable<ObjectDef> ParseObjects(XmlDocument xmlDoc, HashSet<Guid> omOverrides)
         {
             var objects = xmlDoc.GetElementsByTagName("Object");
             foreach (XmlNode obj in objects)
             {
-                var objDef = ParseObject(obj);
+                var objDef = ParseObject(obj, omOverrides);
                 yield return objDef;
             }
         }
@@ -50,11 +86,13 @@ namespace ApplicationParser
             }
         }
 
-        private ObjectDef ParseObject(XmlNode node)
+        private ObjectDef ParseObject(XmlNode node, HashSet<Guid> omOverrides)
         {
             var obj = new ObjectDef();
             obj.Name = node.SelectSingleNode("Name").InnerText;
             obj.Guid = node.SelectSingleNode("Guid").InnerText;
+            obj.ShouldUseOMModel = omOverrides.Contains(Guid.Parse(obj.Guid));
+
             var fields = node.SelectSingleNode("Fields").SelectNodes("Field");
             var systemFields = node.SelectSingleNode("SystemFields").SelectNodes("SystemField");
             var fieldList = new List<Field>();

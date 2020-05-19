@@ -14,7 +14,6 @@
 <# var app = new ApplicationParser.Parser().Parse(fileContent); #>
 <#@ output extension=".cs" #>
 using System;
-using kCura.Relativity.Client.DTOs;
 using $rootnamespace$;
 
 namespace $rootnamespace$

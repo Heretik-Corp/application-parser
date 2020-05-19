@@ -1,4 +1,6 @@
 ﻿using Microsoft.CodeAnalysis;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
 using Xunit;
@@ -66,7 +68,7 @@ namespace ApplicationParser.Tests
             var parser = new Parser();
             var xmlDoc = new XmlDocument();
             xmlDoc.LoadXml(xmlTemplate);
-            var objects = parser.ParseObjects(xmlDoc).ToList();
+            var objects = parser.ParseObjects(xmlDoc, new HashSet<Guid>()).ToList();
 
 
             //ASSERT
@@ -111,7 +113,7 @@ namespace ApplicationParser.Tests
             var parser = new Parser();
             var xmlDoc = new XmlDocument();
             xmlDoc.LoadXml(xmlTemplate);
-            var objects = parser.ParseObjects(xmlDoc).ToList();
+            var objects = parser.ParseObjects(xmlDoc, new HashSet<Guid>()).ToList();
 
 
             //ASSERT
@@ -149,7 +151,7 @@ namespace ApplicationParser.Tests
             var parser = new Parser();
             var xmlDoc = new XmlDocument();
             xmlDoc.LoadXml(xmlTemplate);
-            var objects = parser.ParseObjects(xmlDoc).ToList();
+            var objects = parser.ParseObjects(xmlDoc, new HashSet<Guid>()).ToList();
 
 
             //ASSERT
@@ -188,7 +190,7 @@ namespace ApplicationParser.Tests
             var parser = new Parser();
             var xmlDoc = new XmlDocument();
             xmlDoc.LoadXml(xmlTemplate);
-            var objects = parser.ParseObjects(xmlDoc).ToList();
+            var objects = parser.ParseObjects(xmlDoc, new HashSet<Guid>()).ToList();
 
             //ASSERT
             var field = objects.First().Fields.First();

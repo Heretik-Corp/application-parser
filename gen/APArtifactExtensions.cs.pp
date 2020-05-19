@@ -2,6 +2,8 @@ using kCura.Relativity.Client.DTOs;
 using ApplicationParser;
 using System;
 using System.Linq;
+using Relativity.Services.Objects.DataContracts;
+using System.Collections.Generic;
 
 namespace $rootnamespace$
 {
@@ -35,6 +37,44 @@ namespace $rootnamespace$
             }
             value = GetValue<T>(artifact, fieldGuid);
             return true;
+        }
+
+        public static T GetValue<T>(this RelativityObjectWrapper obj, Guid fieldGuid)
+        {
+            if (obj.FieldValues == null)
+            {
+                obj.FieldValues = new List<FieldValuePairTracker>();
+            }
+            if (!obj.FieldValueExists(fieldGuid))
+            {
+                throw new Exception($"Field with guid {fieldGuid} is not loaded on this object.");
+            }
+            var value = obj[fieldGuid].Value;
+            return (T)value;
+        }
+
+        public static void SetValue<T>(this RelativityObjectWrapper obj, Guid fieldGuid, T value)
+        {
+            if (obj.FieldValues == null)
+            {
+                obj.FieldValues = new List<FieldValuePairTracker>();
+            }
+            if (!obj.FieldValueExists(fieldGuid))
+            {
+                obj.FieldValues.Add(new FieldValuePairTracker(true)
+                {
+                    Field = new Relativity.Services.Objects.DataContracts.Field
+                    {
+                        Guids = new List<Guid> { fieldGuid },
+                    },
+                    Value = value,
+                });
+            }
+            else
+            {
+                obj[fieldGuid].Value = value;
+                obj[fieldGuid].Updated= true;
+            }
         }
     }
 }
