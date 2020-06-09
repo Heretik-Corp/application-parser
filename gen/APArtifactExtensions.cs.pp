@@ -11,6 +11,10 @@ namespace $rootnamespace$
     {
         public static void SetValue<T>(this kCura.Relativity.Client.DTOs.Artifact artifact, Guid fieldGuid, T value)
         {
+            if (artifact == null)
+            {
+                throw new ArgumentNullException(nameof(artifact));
+            }
             if (!artifact.Fields.Any(x => x.Guids.Any(y => y.Equals(fieldGuid))))
             {
                 artifact.Fields.Add(new FieldValue(fieldGuid, value));
@@ -22,6 +26,10 @@ namespace $rootnamespace$
         }
         public static T GetValue<T>(this kCura.Relativity.Client.DTOs.Artifact artifact, Guid fieldGuid)
         {
+            if (artifact == null)
+            {
+                throw new ArgumentNullException(nameof(artifact));
+            }
             if (artifact[fieldGuid] == null)
             {
                 throw new FieldNotLoadedException($"Field with guid {fieldGuid} is not loaded on this object.");
@@ -30,6 +38,10 @@ namespace $rootnamespace$
         }
         public static bool TryGetValue<T>(this kCura.Relativity.Client.DTOs.Artifact artifact, Guid fieldGuid, out T value)
         {
+            if (artifact == null)
+            {
+                throw new ArgumentNullException(nameof(artifact));
+            }
             value = default(T);
             if (artifact[fieldGuid] == null)
             {
@@ -41,6 +53,10 @@ namespace $rootnamespace$
 
         public static T GetValue<T>(this RelativityObjectWrapper obj, Guid fieldGuid)
         {
+            if (obj == null)
+            {
+                throw new ArgumentNullException(nameof(obj));
+            }
             if (obj.FieldValues == null)
             {
                 obj.FieldValues = new List<FieldValuePairTracker>();
@@ -55,6 +71,10 @@ namespace $rootnamespace$
 
         public static void SetValue<T>(this RelativityObjectWrapper obj, Guid fieldGuid, T value)
         {
+            if (obj == null)
+            {
+                throw new ArgumentNullException(nameof(obj));
+            }
             if (obj.FieldValues == null)
             {
                 obj.FieldValues = new List<FieldValuePairTracker>();

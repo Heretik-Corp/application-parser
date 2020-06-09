@@ -76,7 +76,7 @@ namespace $rootnamespace$
                 {
                     Field = x.Field,
                     Value = x.Value,
-                }).ToList() ?? new List<FieldValuePairTracker>()
+                }).ToList() ?? new List<FieldValuePairTracker>();
                 this.ArtifactId = artifact.ArtifactID;
             }
         }
