@@ -2,6 +2,8 @@ using kCura.Relativity.Client.DTOs;
 using ApplicationParser;
 using System;
 using Relativity.Services.Objects.DataContracts;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace $rootnamespace$
 {
@@ -70,11 +72,11 @@ namespace $rootnamespace$
         {
             if (artifact != null)
             {
-                this.FieldValues = artifact.FieldValues.Select(x => new FieldValuePairTracker(false)
+                this.FieldValues = artifact.FieldValues?.Select(x => new FieldValuePairTracker(false)
                 {
                     Field = x.Field,
                     Value = x.Value,
-                }).ToList();
+                }).ToList() ?? new List<FieldValuePairTracker>()
                 this.ArtifactId = artifact.ArtifactID;
             }
         }
