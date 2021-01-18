@@ -51,15 +51,15 @@ namespace Heretik.ApplicationParser.Writers
 
         protected virtual void WriteClassName(ObjectDef obj, StringBuilder sb, string suffix, bool includeInheritance)
         {
-            if (obj.Name.Equals("Document"))
+            if (obj.ShouldUseOMModel)
             {
-                sb.AppendLine($"\t{WriterUtils.GetClass($"{obj.Name}{suffix}")} {(includeInheritance ? ": DocumentWrapper" : "")}");
+                sb.AppendLine($"\t{WriterUtils.GetClass($"{obj.Name}{suffix}")} {(includeInheritance ? ": OMObjectWrapper" : "")}");
             }
             else
             {
-                if (obj.ShouldUseOMModel)
+                if (obj.Name.Equals("Document"))
                 {
-                    sb.AppendLine($"\t{WriterUtils.GetClass($"{obj.Name}{suffix}")} {(includeInheritance ? ": OMObjectWrapper" : "")}");
+                    sb.AppendLine($"\t{WriterUtils.GetClass($"{obj.Name}{suffix}")} {(includeInheritance ? ": DocumentWrapper" : "")}");
                 }
                 else
                 {
