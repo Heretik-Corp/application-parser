@@ -71,16 +71,18 @@ namespace $rootnamespace$
         public string TextIdentifier { get; set; }
 
         public Guid ObjectTypeGuid { get;set; }
-        public RelativityObjectWrapper(Relativity.Services.Objects.DataContracts.RelativityObject artifact)
+        public RelativityObjectWrapper(Relativity.Services.Objects.DataContracts.RelativityObject artifact, bool updated = false)
         {
             if (artifact != null)
             {
-                this.FieldValues = artifact.FieldValues?.Select(x => new FieldValuePairTracker(false)
+                this.FieldValues = artifact.FieldValues?.Select(x => new FieldValuePairTracker(updated)
                 {
                     Field = x.Field,
                     Value = x.Value,
                 }).ToList() ?? new List<FieldValuePairTracker>();
                 this.ArtifactId = artifact.ArtifactID;
+                this.ParentId = artifact.ParentObject?.ArtifactID;
+                this.TextIdentifier = artifact.Name;
             }
         }
     }
